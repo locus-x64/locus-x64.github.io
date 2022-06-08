@@ -301,9 +301,9 @@
             At one time or another, as a developer, we've all found ourselves
             hopelessly stuck on a coding issue...
           </p>
-        </div>
+        </div> -->
 
-        <div class="blog-card">
+        <!-- <div class="blog-card">
           <div></div>
           <h3>Breaking Your Coder's Block</h3>
           <span class="date">APRIL 29, 2016</span>
@@ -312,9 +312,9 @@
             At one time or another, as a developer, we've all found ourselves
             hopelessly stuck on a coding issue...
           </p>
-        </div>
+        </div> -->
 
-        <div class="blog-card">
+        <!-- <div class="blog-card">
           <div></div>
           <h3>Breaking Your Coder's Block</h3>
           <span class="date">APRIL 29, 2016</span>
@@ -332,14 +332,17 @@
       <form action="post">
         <div class="contact-container">
           <h4>Have a question or want to work together?</h4>
-          <input type="text" placeholder="Name" class="name" />
-          <input type="email" placeholder="Enter E-mail" class="email" />
+          <input type="text" placeholder="Name" class="name" id="name" required />
+          <input type="email" placeholder="Enter E-mail" class="email" id="email" required/>
+          <input type="text" placeholder="Subject" class="name" id="subject" required/>
           <textarea
             rows="7"
             placeholder="Your Message"
             class="message"
+            id="message"
+            required
           ></textarea>
-          <button type="submit" class="sub-btn">SUBMIT</button>
+          <button type="submit" class="sub-btn" onclick=sendEmail()>SUBMIT</button>
         </div>
       </form>
       <a href="#home" alt="Up"><div class="up-btn">>></div></a>
@@ -355,5 +358,10 @@
         (This page is a clone of the site http://findmatthew.com)
       </h4>
     </footer>
+    <script>
+      function sendEmail(){
+        window.open('mailto:' + document.getElementById("email").value  + '?subject='+document.getElementById("subject").value +'&body='+ document.getElementById("message").value);
+      }
+    </script>
   </body>
 </html>

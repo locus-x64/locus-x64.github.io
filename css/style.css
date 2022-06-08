@@ -479,14 +479,14 @@ h3 {
 .blog-card:first-child div {
   background: #04c2c9 url(../images/blog-1.jpg) no-repeat center/cover;
 }
-.blog-card:nth-child(2) div {
+/* .blog-card:nth-child(2) div {
   background: #04c2c9 url(../images/blog-2.jpg) no-repeat center/cover;
-}
-.blog-card:nth-child(3) div {
+} */
+/* .blog-card:nth-child(3) div {
   background: #04c2c9 url(../images/blog-3.jpg) no-repeat center/cover;
 }
 .blog-card:last-child div {
-  background: #04c2c9 url(../images/blog-4.jpg) no-repeat center/cover;
+  background: #04c2c9 url(../images/blog-4.jpg) no-repeat center/cover; */
 }
 .date {
   font-size: 0.8rem;
