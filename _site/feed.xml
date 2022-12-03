@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-12-03T21:46:32+05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ali@pwnworld$</title><subtitle>A Computer Science student interested in Kernel Security Exploitiaion.</subtitle><entry><title type="html">Linux Kernel Compilation and Adding a Custom System Call</title><link href="http://localhost:4000/2022/04/13/Linux-Kernel-Compilation.html" rel="alternate" type="text/html" title="Linux Kernel Compilation and Adding a Custom System Call" /><published>2022-04-13T00:00:00+05:00</published><updated>2022-04-13T00:00:00+05:00</updated><id>http://localhost:4000/2022/04/13/Linux-Kernel-Compilation</id><content type="html" xml:base="http://localhost:4000/2022/04/13/Linux-Kernel-Compilation.html">&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;Please make sure you have a good amount of free space. As for Virtual Machines, people were having issues when they allocated only 20GB of storage space. So at least allocate 50GBs to avoid the issues.&lt;/p&gt;
+
+&lt;p&gt;Install the following packages before moving to next step:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gcc make bc build-essential libelf-dev libssl-dev bison flex initramfs-tools git-core libncurses5-dev dwarves zstd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;aside&gt;
+💡 In sir Arif’s document, one package was missing with the name `dwarves` and `zstd`
+
+&lt;/aside&gt;
+
+&lt;p&gt;Now you can follow these steps. First of all, we’ll compile the kernel and test it’s running. Then we’ll add our custom system call.&lt;/p&gt;
+
+&lt;h1 id=&quot;compiling-linux-kernel&quot;&gt;Compiling Linux Kernel&lt;/h1&gt;
+
+&lt;h2 id=&quot;step-1-downloading-source-code-and-extracting&quot;&gt;Step 1: Downloading source code and extracting&lt;/h2&gt;
+
+&lt;p&gt;Download the kernel file from &lt;a href=&quot;http://www.kernel.org/&quot;&gt;www.kernel.org&lt;/a&gt; i would recommend downloading Linux Kernel 5.3.7 Or above version because the method of adding system calls described here is for kernel 5.3.7 or above.&lt;/p&gt;
+
+&lt;p&gt;For simplicity you can download from this direct link (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Kernel 5.10.117&lt;/code&gt;):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.117.tar.xz&quot;&gt;https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.117.tar.xz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;if you are looking to download any other version, for simplicity you will need to download tarball file, as shown in the picture bellow.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/1.jpeg&quot; alt=&quot;1.jpeg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When you have downloaded the archive file linux-5.x.x.tar.xz, you need to extract the file in some directory.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xvf linux-5.x.x.tar.xz &lt;span class=&quot;c&quot;&gt;#use correct file name&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;linux-5.x.x.tar.xz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you are in the directory of kernel files you can verify by list file using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ls&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/2.png&quot; alt=&quot;2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;step-3-configuration&quot;&gt;Step 3: Configuration&lt;/h2&gt;
+
+&lt;p&gt;Now you need to configure your flavor of the kernel. Configuring the kernel involves selecting which features you want to build into the kernel image, which features you want to build as loadable modules, and which features you want to omit entirely. The configure process will finally create a .config script for building the kernel. The .config file contains the configuration information (which has information about the features to be installed) of the kernel to be compiled.&lt;/p&gt;
+
+&lt;p&gt;There are different methods to configure the Linux kernel, but we’ll go with the old configuration of the currently running kernel. Here we’ll copy the old configurations form &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/boot/config-x.x.x-x-generic&lt;/code&gt; and we’ll create a new .config in our kernel’s directory.&lt;/p&gt;
+
+&lt;p&gt;like&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /boot/config-5.13.0-40-generic ./.config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;aside&gt;
+💡 You may have more `config-x.x.x-x-generic` files so to check which configuration is active now use `uname -r` and then copy these versions of the generic file.
+
+&lt;/aside&gt;
+
+&lt;p&gt;Now in this .config file, we need to make some changes.&lt;/p&gt;
+
+&lt;aside&gt;
+💡 This step was missing in sir Arif’s document.
+
+&lt;/aside&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Open the .config file in vim.&lt;/li&gt;
+  &lt;li&gt;Search for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CONFIG_SYSTEM_TRUSTED_KEYS&lt;/code&gt; and assign an empty string to it (i.e, double quotes&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&quot;&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Search for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CONFIG_SYSTEM_REVOCATION_KEYS&lt;/code&gt; and assign an empty string to it (i.e, double quotes&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;&quot;&lt;/code&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/3.jpeg&quot; alt=&quot;3.jpeg&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Now save the file and quit. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:wq!&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now run the following command to configure:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; | make oldconfig &lt;span class=&quot;c&quot;&gt;# it may take some time&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Till now you have made the configuration. But still, you need to distinguish your kernel from other versions. To do so, Open Makefile present in the kernel’s root directory and change the variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EXTRAVERSION&lt;/code&gt; with some name like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/4.png&quot; alt=&quot;4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now to make a copy of the kernel release, run the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make kernelrelease &lt;span class=&quot;c&quot;&gt;# after success a kernel release will be printed like 5.10.117-arm&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-4-compiling-the-modules&quot;&gt;Step 4: Compiling the modules&lt;/h2&gt;
+
+&lt;p&gt;Now it’s time to build/compile the kernel modules.&lt;/p&gt;
+
+&lt;p&gt;To do so you can you the following commands:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nproc&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; bzImage &lt;span class=&quot;c&quot;&gt;# nproc gives the number of your system's cores. and by this command, I am using all of my system's cores to make this process faster&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# after the success of the above command, run the following command.&lt;/span&gt;
+
+make &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nproc&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; modules
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-5-installing-modules&quot;&gt;Step 5: Installing modules&lt;/h2&gt;
+
+&lt;p&gt;Till now your kernel release has been compiled. Now to install the modules, use the following command. You need to be sudoer for the installation process.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nv&quot;&gt;INSTALL_MOD_STRIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 modules_install
+
+&lt;span class=&quot;c&quot;&gt;# INSTALL_MOD_STRIP=1 will reduce the size of the modules before installing them.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This step will take just a second and create a new directory &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/lib/modules/5.10.117-arm/&lt;/code&gt; and copy all the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.ko&lt;/code&gt; files (modules) over there.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-6-installing-kernel&quot;&gt;Step 6: Installing kernel&lt;/h2&gt;
+
+&lt;p&gt;Now run the following command to install the custom kernel.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The install section of Makefile will move the files to their destination locations mentioned in the DIR variables (in the Makefile like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BIN_DIR,&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MAN_DIR&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BIN_DIR_D&lt;/code&gt;, …). Instead of using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mv&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cp&lt;/code&gt; command the install target of Makefile uses a Linux install command that not only moves files but also changes permissions to those files.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-6-updating-the-grub&quot;&gt;Step 6: Updating the grub&lt;/h2&gt;
+
+&lt;p&gt;Till now your kernel has been compiled and installed. But still, we need to update the grub boot loader in order to boot our system from the custom kernel. For that, we need to increase the booting selection process in order to select our kernel. To do so open the file
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/default/grub&lt;/code&gt; in vim and change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GRUB_TIMEOUT&lt;/code&gt; value from 5 to 30.&lt;/p&gt;
+
+&lt;p&gt;Moreover, let the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GRUB_DEFAULT&lt;/code&gt; value to 0, which means by default boot from the first entry of the kernel in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/boot/grub/grub.cfg&lt;/code&gt; file, which will be the newly installed kernel.&lt;/p&gt;
+
+&lt;p&gt;After making these changes you need to update the boot loader using the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;update-grub2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will update GRUB with the new kernel. And if it is the latest kernel version then it will become the default to be loaded when rebooting. Otherwise, we need to select the kernel to run during the booting process explicitly. To open the boot loader, restart the system, during system startup hold the shift key and you will see a screen with all installed kernels.&lt;/p&gt;
+
+&lt;p&gt;Congratulations your kernel is ready to boot.&lt;/p&gt;
+
+&lt;p&gt;Restart your system in order to boot from the new kernel.&lt;/p&gt;
+
+&lt;aside&gt;
+💡 If you have Linux OS as your host operating system and you have turned on the secure boot, then here you might get an error while booting from your new kernel. To handle that error you need to turn off the secure boot and try to boot from your new kernel.r
+
+&lt;/aside&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;adding-system-call&quot;&gt;Adding system call&lt;/h1&gt;
+
+&lt;p&gt;Till now we have compiled and installed our configured Linux kernel release. Now it’s time to make actual changes in the kernel source code to have the motivation that we are actually making changes to the kernel.&lt;/p&gt;
+
+&lt;p&gt;For this time we’ll add only our custom hello world system call.&lt;/p&gt;
+
+&lt;aside&gt;
+💡 Make sure that you should not have booted from your custom kernel to follow these steps.
+
+&lt;/aside&gt;
+
+&lt;h2 id=&quot;step-1-writing-the-systemcall-code-c-file&quot;&gt;Step 1: Writing the systemcall code (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.c&lt;/code&gt; file)&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a c file in which you’ll define your system call. As for now, we are adding a just hello world system call, so use these c files.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;my_syscall &lt;span class=&quot;c&quot;&gt;# create this directory inside the linux source root directory&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;my_syscall
+&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;hello_world.c
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add the following code snippet as this is your custom system call code.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/5.png&quot; alt=&quot;5.png&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;linux/kernel.h&amp;gt;
+#include &amp;lt;linux/syscalls.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;SYSCALL_DEFINE0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hello_world&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;printk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello Ali. This is me, your custom system call.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;c1&quot;&gt;// printk will print to the kernel log. do see the man page for more details&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Makefile&lt;/code&gt;inside your systems call directory and add the following line in it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim Makefile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-makefile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;obj-y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; hello_world.o
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-2-adding-the-header&quot;&gt;Step 2: Adding the header&lt;/h2&gt;
+
+&lt;p&gt;Till now we have designed our system call. Now we need to add and link this system call with our kernel.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim include/linux/syscalls.h
+
+&lt;span class=&quot;c&quot;&gt;# add this line at the end of the file just above #endif&lt;/span&gt;
+asmlinkage long sys_hello_world &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;void&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We need to link our system call with the kernel’s syscalls header. To do so add the following line at the end of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;include/linux/syscalls.h&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;step-3&quot;&gt;Step 3&lt;/h2&gt;
+
+&lt;p&gt;Now we need to register our system call in the syscall table to get a unique system call number. For this open &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;arch/x86/entry/syscalls/syscall_64.tbl&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim &lt;span class=&quot;nb&quot;&gt;arch&lt;/span&gt;/x86/entry/syscalls/syscall_64.tbl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add the following entry at the end of the file where the last system call is registered.&lt;/p&gt;
+
+&lt;aside&gt;
+💡 Remember, use a unique system call number in the 1st column of this table, and do not use the **reserved numbers**. Reserved numbers are already mentioned in this word table file.
+
+&lt;/aside&gt;
+
+&lt;p&gt;For simplicity, I have used 696 number for my system call.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/6.png&quot; alt=&quot;6.png&quot; /&gt;&lt;/p&gt;
+
+&lt;aside&gt;
+💡 In sir Arif’s document, it was mentioned to add a prefix of _x64, but will create problems while compiling. Till now, I was unable to find the exact answer to this problem and why it would be an issue. ( if you find it, please let me know at my email address ;) bcsf19m513@pucit.edu.pk )
+
+&lt;/aside&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;mi&quot;&gt;696&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hello_world&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys_hello_world&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-4&quot;&gt;Step 4&lt;/h2&gt;
+
+&lt;p&gt;Now we need to add our system call’s directory in the kernel source &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Makefile&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Open the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Makefile&lt;/code&gt; and search for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;core-y&lt;/code&gt; entry.&lt;/p&gt;
+
+&lt;p&gt;At the end of this line, add the system call’s directory after a space and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/&lt;/code&gt; at the end of the line. For simplicity see the following picture.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/7.png&quot; alt=&quot;7.png&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-makefile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;core-y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscall/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-5&quot;&gt;Step 5&lt;/h2&gt;
+
+&lt;p&gt;Now we need to recompile and install our kernel in order to test this system call.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nproc&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Use the following command to reboot and hold the shift key to select your custom kernel.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;aside&gt;
+💡 Remember, this time you’ll find a .old kernel file in the grub boot loader but don’t boot from it boot from your custom kernel.
+
+&lt;/aside&gt;
+
+&lt;h2 id=&quot;step-6&quot;&gt;Step 6&lt;/h2&gt;
+
+&lt;p&gt;Now it’s time to test you changes that you have made with your own kernel release i.e, testing system call.&lt;/p&gt;
+
+&lt;aside&gt;
+💡 But remember you must be booted from your own new kernel release. You can verify your kernel that is running by using `uname -r` command.
+
+&lt;/aside&gt;
+
+&lt;p&gt;Write a driver program anywhere in the system and test your system call.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+#include &amp;lt;sys/syscall.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+ &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;syscall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;696&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 696 is my system call's number&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// it means no system call found with provided syscll number&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;error&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Since I have used &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;printk&lt;/code&gt; to write output on the kernel log file, so it won’t be printed on the shell/terminal. To check the kernel log, use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dmesg&lt;/code&gt; and bound it to see the last entries after running the driver program. You’ll find your system call’s output. Which means your system call is working.&lt;/p&gt;
+
+&lt;p&gt;Yes, you did it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/8.jpeg&quot; alt=&quot;8.jpeg&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;writing-a-wrapper-function&quot;&gt;Writing a wrapper function&lt;/h1&gt;
+
+&lt;p&gt;Till we successfully added and tested our system call on our custom kernel release. Now we need to write a wrapper function for our system call. One of the advantages of doing so is that we do not need to remember the syscall number in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;syscall&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-1-write-a-wrapper-function-in-c-file&quot;&gt;Step 1: Write a wrapper function in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c&lt;/code&gt; file&lt;/h2&gt;
+
+&lt;p&gt;You need to create a c file and then write a wrapper function in that file. I have created &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;greetings.c&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;sys/syscall.h&amp;gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;unistd.h&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define SYSCALLNO 696
+&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello %s!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Your message is displayed on kernel log.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;You can use dmesg to read it.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Thanks me later.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;syscall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SYSCALLNO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Error: Syacal Not found :(&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, here I have a recommendation that you can create a position-independent code (PIC) and create a dynamic library.&lt;/p&gt;
+
+&lt;p&gt;for that you need to compile your code using the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gcc &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-fPIC&lt;/span&gt; greetings.c
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now create a dynamic library with famous command.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gcc &lt;span class=&quot;nt&quot;&gt;-shared&lt;/span&gt; greetings.o &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; libgreetings.so
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libgreetings.so&lt;/code&gt; dynamic library. You can add this library to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LD_LIBRARY_PATH&lt;/code&gt; using:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp &lt;/span&gt;libgreetings.so /usr/lib
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So far so good. Now you can write a driver program to test your wrapper function.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+ &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;scanf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%s&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And compile this code using:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gcc driver.c &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; driver &lt;span class=&quot;nt&quot;&gt;-lgreetings&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And you are done.&lt;/p&gt;
+
+&lt;h1 id=&quot;writing-the-man-page&quot;&gt;Writing the man page&lt;/h1&gt;
+
+&lt;p&gt;Till now you can feel like &lt;strong&gt;&lt;em&gt;ohh yee I have my own systemcall that seems something professional&lt;/em&gt;&lt;/strong&gt;. But you have missed one thing while system call development.&lt;/p&gt;
+
+&lt;p&gt;To write a man page you must have a fair idea related to the chapter of the man pages. Since system calls reside in chapter 2 so you need to place a manual for your system call in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/man/man2&lt;/code&gt; which is the directory for chapter 2 man pages for system calls.&lt;/p&gt;
+
+&lt;p&gt;The file name should be something like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;functionName.2&lt;/code&gt; , and in my case, it would be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;greetings.2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Then place your manual page entries like:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.\&quot; This is the manual page for a custom system call .\&quot;
+.TH GREETINGS 2 &quot;August 2022&quot; &quot;Linux Programmer's Manual&quot;
+.SH NAME
+ greetings \- Prints a greeting message on kernel buffer.
+.SH SYNOPSIS
+.br
+.sp
+.BI int (&quot;void&quot;);
+.SH DESCRIPTION
+This system call is written by Ali Raza to solve this assignment of System Programming at PUCIT.
+It simply prints a greeting message from a 
+.SH &quot;RETURN VALUE&quot;
+return 0 on success or -1 on failure.
+.SH &quot;MESSAGE&quot;
+To be honest, systems are awesome. Try to do some productive stuff by adding or updating things in the kernel.
+Happy Learning with &quot;Dr. Arif Butt&quot;!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The last thing is to zip this file using the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;gzip &lt;/span&gt;greetings.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now your man page is ready. Since the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;man&lt;/code&gt; utility reads from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/man&lt;/code&gt; directory for man pages, you also need to place it in this directory under the correct chapter. (For our case it would be chapter 2, the system call’s man pages).&lt;/p&gt;
+
+&lt;p&gt;So, to do that,&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp &lt;/span&gt;greetings.gz /usr/share/man/man2/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now try &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;man greetings&lt;/code&gt; and you’ll find your man page.&lt;/p&gt;
+
+&lt;p&gt;And it’s DONE.&lt;/p&gt;
+
+&lt;p&gt;I hope it was an informative tutorial.&lt;/p&gt;
+
+&lt;p&gt;Happy Learning and of course:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Learning Linux is fun with &lt;a href=&quot;http://www.arifbutt.me/&quot;&gt;Dr. Arif Butt ;)&lt;/a&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;p&gt;~Ali Raza Mumtaz (arm)&lt;/p&gt;</content><author><name>Ali Raza</name></author><category term="Linux Kernel" /><category term="Adding Systemcall" /><category term="Writing man page" /><summary type="html">Prerequisites</summary></entry></feed>
