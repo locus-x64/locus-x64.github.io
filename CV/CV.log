@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.11.23)  19 DEC 2022 05:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.11.23)  19 DEC 2022 19:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -595,7 +595,8 @@ LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count288
 \l__pdf_internal_box=\box99
-) (./CV.aux)
+)
+No file CV.aux.
 \openout1 = `CV.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
@@ -660,7 +661,6 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 90.
 LaTeX Info: Redefining \pageref on input line 90.
 LaTeX Info: Redefining \nameref on input line 90.
- (./CV.out) (./CV.out)
 \@outlinefile=\write3
 \openout3 = `CV.out'.
 
@@ -697,14 +697,20 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 {/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/map/pdftex/updm
 ap/pdftex.map}] [2] (./CV.aux)
-Package rerunfilecheck Info: File `CV.out' has not changed.
-(rerunfilecheck)             Checksum: FEA937378B9935BD761F3E4AA2CCE7C3;1143.
+
+Package rerunfilecheck Warning: File `CV.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `CV.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  FEA937378B9935BD761F3E4AA2CCE7C3;1143.
  ) 
 Here is how much of TeX's memory you used:
- 12013 strings out of 478268
- 194300 string characters out of 5835365
- 519934 words of memory out of 5000000
- 30039 multiletter control sequences out of 15000+600000
+ 11997 strings out of 478268
+ 194157 string characters out of 5835365
+ 519788 words of memory out of 5000000
+ 30029 multiletter control sequences out of 15000+600000
  571740 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  60i,11n,65p,292b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -714,10 +720,10 @@ ist/fonts/type1/public/baskervillef/BaskervilleF-Bold.pfb></opt/homebrew/Cellar
 /texlive/20220321_3/share/texmf-dist/fonts/type1/public/baskervillef/Baskervill
 eF-Regular.pfb></opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on CV.pdf (2 pages, 75123 bytes).
+Output written on CV.pdf (2 pages, 75039 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 72 compressed objects within 1 object stream
+ 55 PDF objects out of 1000 (max. 8388607)
+ 44 compressed objects within 1 object stream
  12 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
