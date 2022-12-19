@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1671303487 "/Users/ali/Downloads/ALI-CV/CV.tex" "CV.pdf" "CV" 1671303487
-  "/Users/ali/Downloads/ALI-CV/CV.tex" 1671303487 11578 c34b3a223bf5a527a4ed33b1505c8c9c ""
+["pdflatex"] 1671410838 "/Users/ali/alirazamumtaz.github.io/CV/CV.tex" "CV.pdf" "CV" 1671410839
+  "/Users/ali/alirazamumtaz.github.io/CV/CV.tex" 1671410837 11579 809d87025b7f9f3d1c76a50419cf304c ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/enc/dvips/baskervillef/zba_uf5aa7.enc" 1647894602 2988 9dc2712ba6e6dcb67c459dabfcdb6a75 ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/map/fontname/texfonts.map" 1647894602 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map" 1647894602 4385071 4481eb56d8dc7e3e247ed9a139c582cd ""
@@ -99,9 +99,9 @@
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/tex/latex/xkeyval/xkeyval.sty" 1647894602 4902 efb3d66683a2da2a232f71e3a571a899 ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/web2c/texmf.cnf" 1647894602 40174 4e2f94c7b252db2ad3c0cfdef6912ab3 ""
   "/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-var/web2c/pdftex/pdflatex.fmt" 1647894602 2826557 3e645ef023e114e50e3f9051cb6a1bbb ""
-  "CV.aux" 1671303487 1786 f7ede7cab666b47307512db602583ebb "pdflatex"
-  "CV.out" 1671303487 1143 d9d974995110fd8d92db18481152d9e8 "pdflatex"
-  "CV.tex" 1671303487 11578 c34b3a223bf5a527a4ed33b1505c8c9c ""
+  "CV.aux" 1671410838 1326 be8d186089cb60169abae9681cd40c24 "pdflatex"
+  "CV.out" 1671410838 599 5ad2dad6a7ac922febd13eab2ef3d9b2 "pdflatex"
+  "CV.tex" 1671410837 11579 809d87025b7f9f3d1c76a50419cf304c ""
   (generated)
   "CV.aux"
   "CV.log"
