@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.11.23)  19 DEC 2022 19:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2022.11.23)  20 JAN 2023 01:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -595,8 +595,7 @@ LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count288
 \l__pdf_internal_box=\box99
-)
-No file CV.aux.
+) (./CV.aux)
 \openout1 = `CV.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
@@ -661,6 +660,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 90.
 LaTeX Info: Redefining \pageref on input line 90.
 LaTeX Info: Redefining \nameref on input line 90.
+ (./CV.out) (./CV.out)
 \@outlinefile=\write3
 \openout3 = `CV.out'.
 
@@ -669,61 +669,57 @@ LaTeX Info: Redefining \nameref on input line 90.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
 (Font)              scaled to size 17.28pt on input line 94.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 97.
+(Font)              scaled to size 12.0pt on input line 98.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 126.
+(Font)              <12> on input line 105.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 126.
+(Font)              <8> on input line 105.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 126.
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 12
-6.
+(Font)              <6> on input line 105.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 10
+5.
 
 (/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/tex/latex/base/ulasy.
 fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 125.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/b/n' will be
-(Font)              scaled to size 10.95pt on input line 126.
+(Font)              scaled to size 10.95pt on input line 125.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 126.
+(Font)              scaled to size 10.0pt on input line 125.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 128.
+(Font)              scaled to size 6.0pt on input line 127.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 128.
+(Font)              <5> on input line 127.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 153.
+(Font)              <7> on input line 152.
  [1
 
 {/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/map/pdftex/updm
 ap/pdftex.map}] [2] (./CV.aux)
-
-Package rerunfilecheck Warning: File `CV.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `CV.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  FEA937378B9935BD761F3E4AA2CCE7C3;1143.
+Package rerunfilecheck Info: File `CV.out' has not changed.
+(rerunfilecheck)             Checksum: FEA937378B9935BD761F3E4AA2CCE7C3;1143.
  ) 
 Here is how much of TeX's memory you used:
- 11997 strings out of 478268
- 194157 string characters out of 5835365
- 519788 words of memory out of 5000000
- 30029 multiletter control sequences out of 15000+600000
- 571740 words of font info for 55 fonts, out of 8000000 for 9000
+ 12020 strings out of 478268
+ 194383 string characters out of 5835365
+ 520934 words of memory out of 5000000
+ 30044 multiletter control sequences out of 15000+600000
+ 572759 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,11n,65p,292b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 60i,12n,65p,379b,537s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/enc/dvips/bas
 kervillef/zba_uf5aa7.enc}</opt/homebrew/Cellar/texlive/20220321_3/share/texmf-d
 ist/fonts/type1/public/baskervillef/BaskervilleF-Bold.pfb></opt/homebrew/Cellar
 /texlive/20220321_3/share/texmf-dist/fonts/type1/public/baskervillef/Baskervill
 eF-Regular.pfb></opt/homebrew/Cellar/texlive/20220321_3/share/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on CV.pdf (2 pages, 75039 bytes).
+Output written on CV.pdf (2 pages, 75613 bytes).
 PDF statistics:
- 55 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 83 PDF objects out of 1000 (max. 8388607)
+ 72 compressed objects within 1 object stream
  12 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 73 words of extra memory for PDF output out of 10000 (max. 10000000)
 
