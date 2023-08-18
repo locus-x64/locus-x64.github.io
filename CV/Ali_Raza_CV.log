@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2023.1.12)  16 MAY 2023 23:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Homebrew) (preloaded format=pdflatex 2023.1.12)  19 AUG 2023 02:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -694,32 +694,32 @@ LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 127.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 152.
+(Font)              <7> on input line 151.
  [1
 
 {/opt/homebrew/Cellar/texlive/20220321_4/share/texmf-dist/fonts/map/pdftex/updm
-ap/pdftex.map}] [2] (./Ali_Raza_CV.aux)
+ap/pdftex.map}] [2] [3] (./Ali_Raza_CV.aux)
 Package rerunfilecheck Info: File `Ali_Raza_CV.out' has not changed.
 (rerunfilecheck)             Checksum: FEA937378B9935BD761F3E4AA2CCE7C3;1143.
  ) 
 Here is how much of TeX's memory you used:
- 12020 strings out of 478268
- 194536 string characters out of 5835366
- 523979 words of memory out of 5000000
+ 12021 strings out of 478268
+ 194542 string characters out of 5835366
+ 522979 words of memory out of 5000000
  30044 multiletter control sequences out of 15000+600000
  572759 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,11n,65p,388b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 60i,11n,65p,445b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/opt/homebrew/Cellar/texlive/20220321_4/share/texmf-dist/fonts/enc/dvips/bas
 kervillef/zba_uf5aa7.enc}</opt/homebrew/Cellar/texlive/20220321_4/share/texmf-d
 ist/fonts/type1/public/baskervillef/BaskervilleF-Bold.pfb></opt/homebrew/Cellar
 /texlive/20220321_4/share/texmf-dist/fonts/type1/public/baskervillef/Baskervill
 eF-Regular.pfb></opt/homebrew/Cellar/texlive/20220321_4/share/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on Ali_Raza_CV.pdf (2 pages, 76688 bytes).
+Output written on Ali_Raza_CV.pdf (3 pages, 76887 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 72 compressed objects within 1 object stream
- 12 named destinations out of 1000 (max. 500000)
+ 88 PDF objects out of 1000 (max. 8388607)
+ 76 compressed objects within 1 object stream
+ 13 named destinations out of 1000 (max. 500000)
  73 words of extra memory for PDF output out of 10000 (max. 10000000)
 
