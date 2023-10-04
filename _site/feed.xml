@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-03-16T14:11:44+05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ali@pwnworld$</title><subtitle>A Computer Science student interested in Kernel Security Exploitation.</subtitle><entry><title type="html">Linux Kernel Compilation and Adding a Custom System Call</title><link href="http://localhost:4000/2022/04/13/Linux-Kernel-Compilation.html" rel="alternate" type="text/html" title="Linux Kernel Compilation and Adding a Custom System Call" /><published>2022-04-13T00:00:00+05:00</published><updated>2022-04-13T00:00:00+05:00</updated><id>http://localhost:4000/2022/04/13/Linux-Kernel-Compilation</id><content type="html" xml:base="http://localhost:4000/2022/04/13/Linux-Kernel-Compilation.html">&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-05T01:01:16+05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ali@pwnworld$</title><subtitle>A Computer Science student interested in Kernel Security Exploitation.</subtitle><entry><title type="html">Linux Kernel Compilation and Adding a Custom System Call</title><link href="http://localhost:4000/2022/04/13/Linux-Kernel-Compilation.html" rel="alternate" type="text/html" title="Linux Kernel Compilation and Adding a Custom System Call" /><published>2022-04-13T00:00:00+05:00</published><updated>2022-04-13T00:00:00+05:00</updated><id>http://localhost:4000/2022/04/13/Linux-Kernel-Compilation</id><content type="html" xml:base="http://localhost:4000/2022/04/13/Linux-Kernel-Compilation.html">&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
 
 &lt;p&gt;Please make sure you have a good amount of free space. As for Virtual Machines, people were having issues when they allocated only 20GB of storage space. So at least allocate 50GBs to avoid the issues.&lt;/p&gt;
 
@@ -75,7 +75,7 @@
 
 &lt;p&gt;Now run the following command to configure:&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt; | make oldconfig &lt;span class=&quot;c&quot;&gt;# it may take some time&lt;/span&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&apos;&lt;/span&gt; | make oldconfig &lt;span class=&quot;c&quot;&gt;# it may take some time&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Till now you have made the configuration. But still, you need to distinguish your kernel from other versions. To do so, Open Makefile present in the kernel’s root directory and change the variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EXTRAVERSION&lt;/code&gt; with some name like this:&lt;/p&gt;
@@ -93,7 +93,7 @@
 
 &lt;p&gt;To do so you can you the following commands:&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nproc&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; bzImage &lt;span class=&quot;c&quot;&gt;# nproc gives the number of your system's cores. and by this command, I am using all of my system's cores to make this process faster&lt;/span&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;nproc&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; bzImage &lt;span class=&quot;c&quot;&gt;# nproc gives the number of your system&apos;s cores. and by this command, I am using all of my system&apos;s cores to make this process faster&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;# after the success of the above command, run the following command.&lt;/span&gt;
 
@@ -281,7 +281,7 @@ asmlinkage long sys_hello_world &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vo
 &lt;/span&gt;
 &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;
 &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
- &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;syscall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;696&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 696 is my system call's number&lt;/span&gt;
+ &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;syscall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;696&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 696 is my system call&apos;s number&lt;/span&gt;
  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// it means no system call found with provided syscll number&lt;/span&gt;
  &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;error&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -366,7 +366,7 @@ asmlinkage long sys_hello_world &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vo
 &lt;p&gt;Then place your manual page entries like:&lt;/p&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.\&quot; This is the manual page for a custom system call .\&quot;
-.TH GREETINGS 2 &quot;August 2022&quot; &quot;Linux Programmer's Manual&quot;
+.TH GREETINGS 2 &quot;August 2022&quot; &quot;Linux Programmer&apos;s Manual&quot;
 .SH NAME
  greetings \- Prints a greeting message on kernel buffer.
 .SH SYNOPSIS
