@@ -1,9 +1,9 @@
-PWD /var/tmp/mystuff/alirazamumtaz.github.io/_site/CV
+PWD /var/tmp/mystuff/alirazamumtaz.github.io/CV
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /var/tmp/mystuff/alirazamumtaz.github.io/_site/CV/Ali_Raza_CV.tex
+INPUT /var/tmp/mystuff/alirazamumtaz.github.io/CV/Ali_Raza_CV.tex
 OUTPUT Ali_Raza_CV.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls

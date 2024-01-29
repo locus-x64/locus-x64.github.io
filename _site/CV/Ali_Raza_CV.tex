@@ -1,5 +1,4 @@
-% Welcome to the simple Undergraduate Complexity Research CV-resume template!
-% Please delete any sections that do not apply to your past experiences. We do not expect that applicants will have itmes for all of the sections included here. You can also rename or revise sections to best fit with your personal accomplishments.
+% Resume Template
 
 \documentclass[letterpaper,11pt]{article}
 
@@ -17,12 +16,12 @@
 \usepackage{multicol}
 \input{glyphtounicode}
 
-\usepackage{baskervillef}
 \usepackage[T1]{fontenc}
+\usepackage{baskervillef}
 
 \pagestyle{fancy}
 \fancyhf{} 
-\fancyfoot{}
+\fancyfoot{}    
 \setlength{\footskip}{10pt}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -113,7 +112,7 @@
 
 %-----------RESEARCH INTERESTS-----------
 \section{Research Interests}
-Interested in the security vulnerabilities posed by Operating Systems, and how they can be exploited. Currently employed as a Security Researcher focusing on the Linux Kernel, specializing in n-day exploitation. Transitioning towards zero-day discovery and proficiently crafting Proof of Concepts (PoC) and exploits for the Linux Kernel. Future aspirations include venturing into Android Kernel Exploration..
+I am interested in finding security vulnerabilities posed by Operating Systems and how they can be exploited. As a Malware Researcher at Ebryx, I focus on Linux Kernel Exploitation, specializing in n-day research. I aim to transition towards zero-day discovery and proficiently craft Proof of Concepts (PoC) and exploits for the Linux Kernel.
 
 %-----------EDUCATION-----------
 % Please list your current institution first and then past schools in reverse chronology. No need for GPA, etc. You do not need to include high school but may do so if there are accomplishments you would like to highlight.
@@ -128,7 +127,7 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
         \resumeItemListEnd
 
     \resumeSubheading
-        {Punjab Group of Colleges, Okara Campus}{2017 - 2019}
+        {Punjab Group of Colleges, Okara Campus}{August 2017 - 2019}
         {Intermediate of Computer Science with Physics}{Okara, Punjab, Pakistan}
         \vspace*{1pt}
         \resumeItemListStart
@@ -144,6 +143,19 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
 \resumeSubHeadingListStart
 
 \researchHeading
+    {0day Day in zlog - CVE-2021-41073}
+    {November, 2023 -- Present}
+    {Ebryx (Pvt.) Ltd.}
+    \resumeItemListStart
+        \resumeItem{Collaborator: \href{https://www.linkedin.com/in/faran-abdullah/}{Faran Abdullah}}
+        \resumeItem{Found bug in zlog}
+        \resumeItem{Wrote PoC}
+        \resumeItem{Submitted to MITRE}
+        \resumeItem{Reserved CVE number - CVE-2024-22857}
+        \resumeItem{Submitted to zlog maintainers and waiting to be published}
+    \resumeItemListEnd
+
+\researchHeading
         {Vulnerability Research and Exploit Development for Android Kernel}
         {July, 2022 -- July, 2023}
         {PUCIT - University of the Punjab}
@@ -153,7 +165,7 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
             \resumeItem{Worked on problems related to memory errors in binaries}
             \resumeItem{Worked on reversing binaries using IDA Freeware}
             \resumeItem{Worked on chroot jailbreak}
-            \resumeItem{Worked on analysing Linux kernel}
+            \resumeItem{Worked on analyzing Linux kernel}
             \resumeItem{Worked on analysing msg\_msg as exploit primitive}
             \resumeItem{Done with analysis of CVE-2019-2215}
             
@@ -170,9 +182,9 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
         {Malware Researcher}{March, 2023 -- Present}
         {Ebryx (Pvt.) Ltd.}{Lahore, Punjab, Pakistan}
         \resumeItemListStart
-            \resumeItem{Working on Kernel Vulnerability Research and Exploitation}
-            \resumeItem{Linux Kernel Auditing}
-            \resumeItem{Tools: elixir by bootlin, buildroot, GDB, QEMU, etc. }
+            \resumeItem{Working on Kernel nday research}
+            \resumeItem{Tools: elixir by bootlin, build root, GDB, QEMU, etc. }
+            \resumeItem{Recognitions: Annual Best Performance Award 2023}
           \resumeItemListEnd
 
     \resumeSubheading
@@ -188,8 +200,8 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
         {Programming Tutor}{April, 2022 -- Present}
         {Freelance on Fiverr}{\href{https://www.fiverr.com/alirazamumtaz/}{Profile}}
         \resumeItemListStart
-            \resumeItem{Teaching low level programming concepts in C}
-            \resumeItem{Teaching object oriented programming in C++}
+            \resumeItem{Teaching low-level programming concepts in C}
+            \resumeItem{Teaching object-oriented programming in C++}
         \resumeItemListEnd
 
 \resumeSubHeadingListEnd
@@ -210,9 +222,9 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
 % This section can include programming or spoken languages, text editing and general software knowledge, certifications, version control or project management tools, or other skills that might be relevant. You can include as many or as few as you like: delete or add as needed.  
 \begin{itemize}[leftmargin=0.15in, label={}]
     \normalsize{\item{
-     \textbf{Programming Languages}{: C, Python, Java, x86-64 Assembly} \\
+     \textbf{Programming Languages}{: Assembly, C} \\
      \textbf{Security}{: Binary Exploitation, Reverse Engineering, n-day Research, PoC writing}\\
-     \textbf{Tools}{: elixir by bootlin, buildroot, IDA, GDB, GNU/Make} \\
+     \textbf{Tools}{: elixir by bootlin, IDA Pro, GDB, GNU/Make} \\
      \textbf{OS}{: MacOS, Linux} \\
     }}
  \end{itemize}
@@ -226,7 +238,7 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
             {Unix Shell}{C, Makefile}
             {\href{https://github.com/alirazamumtaz/system-programming/tree/master/linux-shell}{https://github.com/alirazamumtaz/unix-shell}}{}
             \resumeItemListStart
-                \resumeItem{An effort to write the *nix based shell to gain understanding of how shell works and how OS creates and handles processes and allows processes to communicate with each other through it's IPC interface}
+                \resumeItem{An effort to write the *nix-based shell to gain an understanding of how the shell works and how OS creates and handles processes and allows processes to communicate with each other through its IPC interface}
             \resumeItemListEnd
         
         \resumeSubheading
@@ -240,14 +252,14 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
             {Hack Assembler}{C++}
             {\href{https://github.com/alirazamumtaz/hack-assembler}{https://github.com/alirazamumtaz/hack-assembler}}{}
             \resumeItemListStart
-                \small\resumeItem{A 16-bit machine language assembler for the 16-bit Hack Assembly Language. This was done as part of building a complete 16-bit computer during the Computer Organization Assembly Language Course}
+                \small\resumeItem{A 16-bit machine language assembler for the 16-bit Hack Assembly Language. It was done as part of building a complete 16-bit computer during the Computer Organization Assembly Language Course}
             \resumeItemListEnd
 
 \resumeSubHeadingListEnd
 
 %-----------COURSES-----------
 \section{Courses \& MOOCs}
-% This section can include courses you have taken, or MOOCs you have completed. You can remove or add sections as needed.
+% This section can include courses you have taken or MOOCs you have completed. You can remove or add sections as needed.
 \begin{itemize}[leftmargin=0.15in, label={}]
     \normalsize{\item{
      \textbf{Computer Systems Security}{: \href{https://dojo.pwn.college/cse466/}{pwn.college}} \\
@@ -266,7 +278,7 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
 
 %-----------EXTRACURRICULARS & VOLUNTEERING-----------
 \section{Extracurriculars \& Volunteering} 
-% If you have been involved in extracurricular activities or volunteer work, you can list them here.
+% If you have been involved in extracurricular activities or volunteer work, list them here.
 \resumeSubHeadingListStart
     
     \resumeSubheading
@@ -283,7 +295,7 @@ Interested in the security vulnerabilities posed by Operating Systems, and how t
         {Event Management Society}{2020 -- 2021 \& 2022 -- 2023}
         \resumeItemListStart
             \small\resumeItem{Organized inter-college events}
-            \small\resumeItem{E.g. Job Fair, Trips, etc}
+            \small\resumeItem{E.g., Job Fair, Trips, etc.}
         \resumeItemListEnd
 
 \resumeSubHeadingListEnd
