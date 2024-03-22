@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.1.29)  8 MAR 2024 19:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.15)  22 MAR 2024 14:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -245,9 +245,9 @@ Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
 (babel)             (\language0). Reported on input line 102.
 Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
-(babel)             (\language65). Reported on input line 105.
+(babel)             (\language74). Reported on input line 105.
 Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
-(babel)             (\language65). Reported on input line 108.
+(babel)             (\language74). Reported on input line 108.
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
 Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
@@ -622,38 +622,38 @@ LaTeX Font Info:    Trying to load font information for U+lasy on input line 10
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 124.
+(Font)              <10.95> on input line 125.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/b/n' will be
-(Font)              scaled to size 10.95pt on input line 124.
+(Font)              scaled to size 10.95pt on input line 125.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 124.
+(Font)              scaled to size 6.0pt on input line 127.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 127.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 126.
+(Font)              scaled to size 10.0pt on input line 139.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 126.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 162.
+(Font)              <7> on input line 139.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] (./Ali_Raza_CV.aux
 )
 Package rerunfilecheck Info: File `Ali_Raza_CV.out' has not changed.
-(rerunfilecheck)             Checksum: FEA937378B9935BD761F3E4AA2CCE7C3;1143.
+(rerunfilecheck)             Checksum: 2A91AA0B667A015166844E476D8D7F57;1143.
  ) 
 Here is how much of TeX's memory you used:
  12063 strings out of 478287
  190489 string characters out of 5849289
- 520653 words of memory out of 5000000
+ 522655 words of memory out of 5000000
  30071 multiletter control sequences out of 15000+600000
  572759 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,11n,65p,374b,557s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,11n,65p,374b,617s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/baskervillef/zba_uf5aa7.enc}</
 usr/share/texlive/texmf-dist/fonts/type1/public/baskervillef/BaskervilleF-Bold.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/baskervillef/BaskervilleF
 -Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
 6.pfb>
-Output written on Ali_Raza_CV.pdf (3 pages, 79200 bytes).
+Output written on Ali_Raza_CV.pdf (3 pages, 79182 bytes).
 PDF statistics:
  94 PDF objects out of 1000 (max. 8388607)
  82 compressed objects within 1 object stream
