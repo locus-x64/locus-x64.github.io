@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.15)  22 MAR 2024 14:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.15)  22 MAR 2024 14:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -546,36 +546,36 @@ LaTeX Font Info:    Trying to load font information for U+lasy on input line 104
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 125.
+(Font)              <10.95> on input line 123.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/b/n' will be
-(Font)              scaled to size 10.95pt on input line 125.
+(Font)              scaled to size 10.95pt on input line 123.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 6.0pt on input line 127.
+(Font)              scaled to size 6.0pt on input line 125.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 127.
+(Font)              <5> on input line 125.
 LaTeX Font Info:    Font shape `T1/BaskervilleF-TLF/m/n' will be
-(Font)              scaled to size 10.0pt on input line 139.
+(Font)              scaled to size 10.0pt on input line 137.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 139.
+(Font)              <7> on input line 137.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] (./Ali_Raza_CV.aux)
 Package rerunfilecheck Info: File `Ali_Raza_CV.out' has not changed.
-(rerunfilecheck)             Checksum: 922CF9E72CB3ECA61E113C228E7BDE8C;936.
+(rerunfilecheck)             Checksum: 57719DCAD06F2C89354259D3AF17B0EE;994.
  ) 
 Here is how much of TeX's memory you used:
  12061 strings out of 478287
  190593 string characters out of 5849289
- 522654 words of memory out of 5000000
+ 521654 words of memory out of 5000000
  30070 multiletter control sequences out of 15000+600000
  572759 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,12n,65p,418b,538s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,11n,65p,462b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/baskervillef/zba_uf5aa7.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/baskervillef/BaskervilleF-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/baskervillef/BaskervilleF-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on Ali_Raza_CV.pdf (2 pages, 76400 bytes).
+Output written on Ali_Raza_CV.pdf (2 pages, 76407 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 72 compressed objects within 1 object stream
+ 79 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
  11 named destinations out of 1000 (max. 500000)
  65 words of extra memory for PDF output out of 10000 (max. 10000000)
 
