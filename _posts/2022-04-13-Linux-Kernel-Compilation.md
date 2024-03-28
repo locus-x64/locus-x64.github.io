@@ -7,6 +7,7 @@ tags:
  - Writing man page
 author: "Ali Raza"
 comments: true
+permalink: /posts/linux-kernel-compilation
 description: "We can make changes to the Linux kernel and compile it to make out a custom copy. For that, I have written a detailed tutorial for you. In this post, You'll also learn how you can write your custom man page for your custom syscall."
 ---
 

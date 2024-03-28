@@ -6,6 +6,7 @@ tags:
  - Code Auditing
 author: "Ali Raza"
 comments: true
+permalink: /posts/setup-elixir
 description: "Explore source code in your browser - Particularly useful for the Linux kernel and other low-level projects in C/C++"
 
 ---
