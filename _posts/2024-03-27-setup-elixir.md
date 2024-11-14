@@ -36,31 +36,32 @@ docker --version
 Create a directory for your Elixir instance and inside that directory create a `Dockerfile` with the following content:
 
 ```Dockerfile
-FROM debian:bookworm
-ARG GIT_REPO_URL
-ARG PROJECT
-
-RUN \
-    : "${GIT_REPO_URL:?set GIT_REPO_URL to the repo git url}"
-
-RUN \
-    : "${PROJECT:?set PROJECT to set the project name}"
-
-RUN \
-    echo "repo url to index: ${GIT_REPO_URL}"
-
+FROM debian:bookworm AS build
 
 RUN \
   apt-get update && \
   apt-get --no-install-recommends -y install \
     python3 \
     python3-pip \
-    python3-falcon \
-    python3-jinja2 \
-    python3-bsddb3 \
-    python3-pytest \
-    python3-pygments- \
-    pipx \
+    python3-dev \
+    libdb-dev \
+    build-essential
+
+WORKDIR /build/
+
+# NOTE wheel version MUST be sycnhronized with requirements.txt
+RUN pip wheel berkeleydb==18.1.10
+
+FROM debian:bookworm
+
+RUN \
+  apt-get update && \
+  apt-get --no-install-recommends -y install \
+    python3 \
+    python3-pip \
+    python3-venv \
+    universal-ctags \
+    libdb5.3 \
     perl \
     git \
     apache2 \
@@ -69,50 +70,27 @@ RUN \
     libyaml-0-2 \
     wget
 
-RUN \
-  wget https://bootlin.com/pub/elixir/universal-ctags_0+git20200526-0ubuntu1_amd64.deb
+COPY . /usr/local/elixir/
 
-RUN \
-  dpkg -i universal-ctags_0+git20200526-0ubuntu1_amd64.deb
+WORKDIR /usr/local/elixir/
 
-RUN \
-  wget https://bootlin.com/pub/elixir/Pygments-2.6.1.elixir-py3-none-any.whl
+COPY --from=build /build/berkeleydb-*.whl /tmp/build/
 
-RUN \
-  pip3 install ./Pygments-2.6.1.elixir-py3-none-any.whl --break-system-packages
+RUN python3 -m venv venv && \
+    . ./venv/bin/activate && \
+    pip install /tmp/build/berkeleydb-*.whl && \
+    pip install -r requirements.txt
 
-RUN \
-  git config --global user.email 'elixir@dummy.com' && \
-  git config --global user.name 'elixir'
+RUN mkdir -p /srv/elixir-data/
 
-RUN \
-  git clone https://github.com/bootlin/elixir.git /usr/local/elixir/
+COPY ./docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-RUN \
-  mkdir -p /srv/elixir-data/ && \
-  mkdir -p /srv/elixir-data/$PROJECT/repo && \
-  mkdir -p /srv/elixir-data/$PROJECT/data && \
-  git clone --bare "${GIT_REPO_URL}" /srv/elixir-data/$PROJECT/repo/ && \
-  git config --global --add safe.directory /srv/elixir-data/$PROJECT/repo
-
-ENV LXR_REPO_DIR /srv/elixir-data/$PROJECT/repo
-ENV LXR_DATA_DIR /srv/elixir-data/$PROJECT/data
-
-RUN \
-  cd /usr/local/elixir/ && \
-  ./script.sh list-tags && \
-  python3 -u ./update.py && \
-  chown -R www-data:www-data /srv/elixir-data/$PROJECT/repo
-
-# apache elixir config, see elixir README
-# make apache less stricter about cgitb spam headers
-COPY ./docker/debian/000-default.conf /etc/apache2/sites-available/000-default.conf
-
-RUN \
-  echo -e "\nHttpProtocolOptions Unsafe" >> /etc/apache2/apache.conf && \
-  a2enmod cgi rewrite
+RUN a2enmod rewrite
 
 EXPOSE 80
+
+ARG ELIXIR_VERSION
+ENV ELIXIR_VERSION=$ELIXIR_VERSION
 
 ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 ```
@@ -120,29 +98,31 @@ ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 Create a directory tree as `./docker/debian/` (assuming you are using debian) and inside that directory create a file named `000-default.conf` with the following content:
 
 ```apache
-<Directory /usr/local/elixir/http/>
-    Options +ExecCGI
+<Directory /usr/local/elixir/>
+    AllowOverride None
+    Require all denied
+    <FilesMatch "wsgi.py">
+        Require all granted
+    </FilesMatch>
+</Directory>
+<Directory /usr/local/elixir/static/>
     AllowOverride None
     Require all granted
-    SetEnv PYTHONIOENCODING utf-8
-    SetEnv LXR_PROJ_DIR /srv/elixir-data
 </Directory>
-<Directory /usr/local/elixir/api/>
-    SetHandler wsgi-script
-    Require all granted
-    SetEnv PYTHONIOENCODING utf-8
-    SetEnv LXR_PROJ_DIR /srv/elixir-data
-</Directory>
-AddHandler cgi-script .py
 <VirtualHost *:80>
     ServerName MY_LOCAL_IP
-    DocumentRoot /usr/local/elixir/http
-    WSGIScriptAlias /api /usr/local/elixir/api/api.py
+    DocumentRoot /usr/local/elixir/
+
+    SetEnv LXR_PROJ_DIR /srv/elixir-data/
+    # NOTE: it's recommended to set processes value to the number of available cores
+    WSGIDaemonProcess Elixir processes=4 display-name=%{GROUP} home=/usr/local/elixir/ python-home=/usr/local/elixir/venv/
+
+    WSGIProcessGroup Elixir
+    WSGIScriptAliasMatch "^/(?!static/)" /usr/local/elixir/wsgi.py/$1
+
     AllowEncodedSlashes On
     RewriteEngine on
     RewriteRule "^/$" "/linux/latest/source" [R]
-    RewriteRule "^/(?!api|acp).*/(source|ident|search)" "/web.py" [PT]
-    RewriteRule "^/acp" "/autocomplete.py" [PT]
 </VirtualHost>
 ```
 
