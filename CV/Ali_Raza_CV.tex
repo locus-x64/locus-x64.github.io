@@ -96,14 +96,15 @@
         \begin{flushleft}
         \large{Lahore, 54590} \\
         \large{Punjab, Pakistan} \\
-        % \href{tel:+923057381431}{+92 305 7381431} \\
+        \href{tel:+923057381431}{+92 305 7381431} \\
         \end{flushleft}
         
         \begin{flushright}
         % this could be LinkedIn, GitHub, or a personal website or social media account (if used for professional purposes)
         \large{Webiste}: \href{https://locus-x64.github.io/}{\underline{locus-x64.github.io}} \\
+        % \large{LinkedIn}: \href{https://www.linkedin.com/in/alirazamumtaz}{\underline{linkedin.com/in/alirazamumtaz}} \\
         % please ensure your email address is one you check
-        \large{Email}: \underline{elirazamumtaz[.at.]gmail.com}
+        \large{Email}: \underline{elirazamumtaz@gmail.com}
         \end{flushright}
     \end{multicols}
 \end{center}
@@ -111,11 +112,25 @@
 %-----------RESEARCH INTERESTS-----------
 \section{Research Interests}
 % Interested in finding security vulnerabilities posed by Operating Systems and how they can be exploited. As a Malware Researcher at Ebryx, I focus on Linux Kernel Exploitation, specializing in n-day research. I aim to transition towards zero-day discovery and proficiently craft Proof of Concepts (PoC) and exploits for the Linux Kernel.
-Interested in identifying security vulnerabilities posed by Operating Systems and understanding their potential exploitation. As a Malware Researcher at Ebryx, I specialize in Linux kernel exploitation and mainly focus on n-day research. I aim to transition towards zero-day discovery and adeptly craft Proof of Concepts (PoCs) and exploits for the Linux/Android Kernel.
+I am interested in identifying security vulnerabilities posed by Operating Systems and understanding their potential exploitation. As a Security Researcher at Ebryx, I specialize in Linux kernel exploitation and mainly focus on n-day research. I find Over-The-Air (OTA) exploitation interesting now, and I am exploring baseband firmware from an exploit developer's perspective.
 %-----------RESEARCH EXPERIENCE-----------
 \section{Research Experience}
 % it is not expected that applicants have research experience but this section can include experience gained in a laboratory course, shadowing experiences, or group or independent research projects
 \resumeSubHeadingListStart
+
+\researchHeading
+{nday ("Call of Death" in Shannon Baseband) - \href{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25279}{CVE-2020-25279}}
+{December, 2024 -- Present}
+{Ebryx (Pvt.) Ltd.}
+   \resumeItemListStart
+       \resumeItem{Looking into Over-The-Air(OTA) communication in the mobile phone}
+       \resumeItem{Explored different radio protocols used for mobile phone calls and SMS}
+       \resumeItem{Looked into Samsung's Exynos modem chip that uses Shannon RTOS}
+       \resumeItem{Used IDA Python and Ghidra scripts combined to load the firmware file for reversing}
+       \resumeItem{Analysed the PAL memory allocation mechanism in Shannon}
+       \resumeItem{Found the vulnerable code for the CVE mentioned above statically}
+       \resumeItem{Working on FirmWire emulator to emulate the modem file and write RCE for it}        
+    \resumeItemListEnd
 
 \researchHeading
     {0day in zlog (Famous C logging library) - \href{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-22857}{CVE-2024-22857}}
@@ -130,6 +145,17 @@ Interested in identifying security vulnerabilities posed by Operating Systems an
     \resumeItemListEnd
 
 \researchHeading
+    {nday (Dirty Pipe) - \href{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-0847}{CVE-2022-0847}}
+    {April, 2023 -- May, 2023}
+    {Ebryx (Pvt.) Ltd.}
+    \resumeItemListStart
+        \resumeItem{Explored different data only attack in Linux kernel}
+        \resumeItem{Looked into the in-memory buffer management inside kernel}
+        \resumeItem{Following the source of pipe IPC in Linux kernel using elixir.bootlin, wrote a PoC for the CVE-2022-0847}
+
+    \resumeItemListEnd
+
+\researchHeading
         {Vulnerability Research and Exploit Development for Android Kernel, University FYP}
         {July, 2022 -- July, 2023}
         {PUCIT - University of the Punjab}
@@ -140,7 +166,7 @@ Interested in identifying security vulnerabilities posed by Operating Systems an
             \resumeItem{Worked on chroot jailbreak}
             \resumeItem{Worked on analyzing Linux kernel}
             \resumeItem{Worked on analysing msg\_msg as exploit primitive}
-            \resumeItem{Done with analysis of CVE-2019-2215}
+            \resumeItem{Done with analysis of CVE-2019-2215 (nday)}
             
         \resumeItemListEnd
 
@@ -155,9 +181,13 @@ Interested in identifying security vulnerabilities posed by Operating Systems an
         {Malware Researcher}{March, 2023 -- Present}
         {Ebryx (Pvt.) Ltd.}{Lahore, Punjab, Pakistan}
         \resumeItemListStart
-            \resumeItem{Working on Kernel nday research}
-            \resumeItem{Tools: IDA Freeware, elixir by bootlin, GDB, QEMU, etc. }
-            \resumeItem{Recognitions: Annual Best Performance Award 2023}
+            \resumeItem{Designed a kernel-level technique to detect path traversal attacks}
+            \resumeItem{Working with a team looking for Linux user-land vulnerabilities and exploits and then introducing generic mitigation to cover that specific class of attack (e.g., Java Deserialization)}
+            \resumeItem{Designed a kernel-level technique to patch ASLR brute forcing}
+            \resumeItem{Found 0-day vulnerability as CVE-2024-22857 in a famous open-source library.}
+            \resumeItem{Started looking for syzkaller to fuzz the Linux kernel.}
+            \resumeItem{Working on Linux Kernel Exploitation (n-Day Research)}
+            \resumeItem{Recognitions: Annual Best Performance Award 2023, Special recognition for the 0day}
           \resumeItemListEnd
 
     \resumeSubheading
@@ -179,8 +209,8 @@ Interested in identifying security vulnerabilities posed by Operating Systems an
 \begin{itemize}[leftmargin=0.15in, label={}]
     \normalsize{\item{
      \textbf{Programming Languages}{: Assembly, C, C++, Python} \\
-     \textbf{Security}{: Binary Exploitation, Reverse Engineering, Vulnerability Research, Fuzzing, Exploit Development, n-day Research}\\
-     \textbf{Tools}{: AFL++, syzkaller, IDA Pro, elixir by bootlin, GDB, GNU/Make} \\
+     \textbf{Security}{: Binary Exploitation, Reverse Engineering, Vulnerability Research, Fuzzing, Exploit Development, n-day Research, OTA Exploitation}\\
+     \textbf{Tools}{: AFL++, syzkaller, IDA Pro, IDAPython, Ghidra, FirmWire, elixir by bootlin, GDB, GNU/Make} \\
      \textbf{OS}{: Linux-x64} \\
     }}
  \end{itemize}
@@ -195,8 +225,9 @@ Interested in identifying security vulnerabilities posed by Operating Systems an
         {PUCIT - University of the Punjab}{October, 2019 -- July, 2023}
         {Bachelor of Science - Computer Science}{Lahore, Punjab, Pakistan}
         \resumeItemListStart
-            \resumeItem{Graduated with CGPA 3.65/4.0}
+            \resumeItem{Graduated with CGPA 3.58/4.0}
             \resumeItem{Campus Lead of Google DSC}
+            \resumeItem{President PUCon'23}
             \resumeItem{Member of the Cyber Security Society (Cyber@PU)}
         \resumeItemListEnd
 
