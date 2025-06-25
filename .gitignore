@@ -1,4 +1,0 @@
-# ignore all in Cv/* except CV/*.pdf and CV/*.tex
-CV/*
-!CV/*.pdf
-!CV/*.tex
