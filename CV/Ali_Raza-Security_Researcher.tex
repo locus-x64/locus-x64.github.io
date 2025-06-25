@@ -1,0 +1,492 @@
+
+\documentclass[a4paper,11pt]{article}
+
+% Package imports
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage[empty]{fullpage}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{marvosym}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{cfr-lm}
+\usepackage[T1]{fontenc}
+\usepackage{fontawesome5}
+
+% Color definitions
+\definecolor{darkblue}{RGB}{0,0,139}
+
+% Page layout
+\setlength{\multicolsep}{0pt} 
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
+\setlength{\footskip}{5pt} % Addressing fancyhdr warning
+
+% Hyperlink setup (moved after fancyhdr to address warning)
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    filecolor=darkblue,
+    urlcolor=darkblue,
+}
+
+% Custom box settings
+\usepackage[most]{tcolorbox}
+\tcbset{
+    frame code={},
+    center title,
+    left=0pt,
+    right=0pt,
+    top=0pt,
+    bottom=0pt,
+    colback=gray!20,
+    colframe=white,
+    width=\dimexpr\textwidth\relax,
+    enlarge left by=-2mm,
+    boxsep=4pt,
+    arc=0pt,outer arc=0pt,
+}
+
+% URL style
+\urlstyle{same}
+
+% Text alignment
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item{
+    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
+  }
+}
+
+\newcommand{\resumePOR}[3]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1}\hspace{0.3mm}#2 & \textit{\small{#3}} 
+    \end{tabular*}
+    \vspace{-2mm}
+}
+
+\newcommand{\resumeSubheading}[4]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#4}} \\
+        \textit{\footnotesize{#3}} &  \footnotesize{#2}\\
+    \end{tabular*}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeProject}[4]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#3}} \\
+        \footnotesize{\textit{#2}} & \footnotesize{#4}
+    \end{tabular*}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeResearchExp}[2]{
+\vspace{0.5mm}\item
+        \textbf{#1} 
+        {#2}
+    % \vspace{-2.4mm}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#2}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand{\labelitemii}{$\vcenter{\hbox{\tiny$\circ$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm]}
+\newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.7mm, rightmargin=2ex]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm,itemsep=0.5mm]}
+
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{2mm}}
+\newcommand{\resumeHeadingSkillEnd}{\end{itemize}\vspace{-2mm}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-2mm}}
+\newcommand{\cvsection}[1]{%
+\vspace{2mm}
+\begin{tcolorbox}
+    \textbf{\large #1}
+\end{tcolorbox}
+    \vspace{-4mm}
+}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}%
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
+\newcolumntype{C}{>{\centering\arraybackslash}X}%
+
+% Commands for icon sizing and positioning
+\newcommand{\socialicon}[1]{\raisebox{-0.05em}{\resizebox{!}{1em}{#1}}}
+\newcommand{\ieeeicon}[1]{\raisebox{-0.3em}{\resizebox{!}{1.3em}{#1}}}
+
+% Font options
+\newcommand{\headerfonti}{\fontfamily{phv}\selectfont} % Helvetica-like (similar to Arial/Calibri)
+\newcommand{\headerfontii}{\fontfamily{ptm}\selectfont} % Times-like (similar to Times New Roman)
+\newcommand{\headerfontiii}{\fontfamily{ppl}\selectfont} % Palatino (elegant serif)
+\newcommand{\headerfontiv}{\fontfamily{pbk}\selectfont} % Bookman (readable serif)
+\newcommand{\headerfontv}{\fontfamily{pag}\selectfont} % Avant Garde-like (similar to Trebuchet MS)
+\newcommand{\headerfontvi}{\fontfamily{cmss}\selectfont} % Computer Modern Sans Serif
+\newcommand{\headerfontvii}{\fontfamily{qhv}\selectfont} % Quasi-Helvetica (another Arial/Calibri alternative)
+\newcommand{\headerfontviii}{\fontfamily{qpl}\selectfont} % Quasi-Palatino (another elegant serif option)
+\newcommand{\headerfontix}{\fontfamily{qtm}\selectfont} % Quasi-Times (another Times New Roman alternative)
+\newcommand{\headerfontx}{\fontfamily{bch}\selectfont} % Charter (clean serif font)
+
+\begin{document}
+\headerfontiii
+
+% Header
+\begin{center}
+    {\Huge\textbf{ALI RAZA}}\\
+    {\textit{Security Researcher}}
+\end{center}
+\vspace{-6mm}
+
+\begin{center}
+    \small{
+    +92-305-738-1431 | \href{mailto:elirazamumtaz@gmail.com}{elirazamumtaz@gmail.com} | 
+    \href{https://locus-x64.github.io/}{locus-x64.github.io}
+    }
+\end{center}
+\vspace{-6mm}
+
+\begin{center}
+    \small{
+    \socialicon{\faLinkedin} \href{https://www.linkedin.com/in/alirazamumtaz/}{alirazamumtaz} | 
+    \socialicon{\faGithub} \href{https://github.com/locus-x64}{locus-x64} |
+    \socialicon{\faTwitter} \href{https://twitter.com/locus_x64}{locus\_x64}
+    }
+\end{center}
+\vspace{-6mm}
+\begin{center}
+    \small{Lahore, Punjab - 53000, Pakistan}
+\end{center}
+
+\vspace{-4mm}
+
+% \section{\textbf{Objective}}
+% \vspace{1mm}
+% \small{
+% I am interested in identifying security vulnerabilities posed by operating systems and understanding their potential exploitation. At Ebryx, I have worked on Linux kernel exploitation with focus on n-day research. Now we are building kernel-level security measures to block exploit techniques.
+% }
+% \vspace{-2mm}
+
+
+
+\section{\textbf{Professional Experience}}
+\vspace{-0.4mm}
+  \resumeSubHeadingListStart
+   % \resumeSubHeadingListStart
+  \resumeSubheading
+      {{Ebryx (Pvt.) Ltd. [\href{https://www.ebryx.com}{\faIcon{globe}}]}}{Lahore, Pakistan}
+      {Security Researcher}{Mar 2023 - Current}
+      \resumeItemListStart
+        \item Mitigating attacks by doing interpreters \& runtime hardening
+        \item Designed kernel-level technique using Linux netfilters to detect path traversal attacks on a Linux system
+        \item Designed userland agent using JVMTI to detect Java Deserialization attacks on a Linux system.
+        \item Designed kernel-level technique using LKMs to detect ASLR brute force attacks on a Linux system
+        \item Discovered a 0-day vulnerability (CVE-2024-22857) in the open-source logging library zlog using AFL++ fuzzing
+        \item Performed fuzzing on Linux kernel-specific syscalls using syzkaller, focusing on black-box security research
+        \item Conducted n-day research on Linux Kernel Exploitation, improving security assessments and attack strategies
+        \item Formalized a Linux kernel exploitation attack matrix, uncovering exploitable kernel objects and refining pre/post-exploitation techniques
+      \resumeItemListEnd
+ % \resumeSubHeadingListEnd
+  % \resumeSubheading
+  %     {{Ebryx (Pvt.) Ltd. [\href{https://www.ebryx.com}{\faIcon{globe}}]}}{Lahore, Pakistan}
+  %     {Security Researcher}{Mar 2023 - Current}
+  %     \resumeItemListStart
+  %       \item Working on Full Stack Attack Chains on Linux Environment building security mechanisms on system level
+  %       \item Found 0-day vulnerability as CVE-2024-22857 in a famous open-source logging library
+  %       \item Worked on syzkaller to fuzz Linux kernel's specific syscalls
+  %       \item Worked on Linux Kernel Exploitation (n-Day Research)
+  %     \resumeItemListEnd 
+  \resumeSubheading
+    {University of the Punjab [\href{https://www.pu.edu.pk}{\faIcon{globe}}]}{Lahore, Pakistan}
+    {Teaching Assistant}{Oct 2022 - Feb 2023}
+    \resumeItemListStart
+      \item Designed material and coursework for the newly introduced lab component of the subject
+      \item Designed exam papers for the lab
+      \item Assisted students in the lab + other TA responsibilities
+    \resumeItemListEnd
+  \resumeSubHeadingListEnd
+\vspace{-6mm}
+
+\section{\textbf{Research Experience}}
+\vspace{-0.4mm}
+\resumeSubHeadingListStart
+
+\resumeResearchExp
+  {n-day ("Call of Death" in Shannon Baseband) - CVE-2020-25279 [\href{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25279}{\faIcon{globe}}] }
+{
+\resumeItemListStart
+  \item Looked into Samsung's Exynos modem chip that uses Shannon RTOS
+  \item Used IDA Python and Ghidra scripts combined to load the firmware file for reversing
+  \item Analysed the PAL memory allocation mechanism in Shannon
+  \item Found the vulnerable code for the CVE mentioned above statically
+  \item Used FirmWire to emulate the firmware
+  \item Tools used: FirmWire, IDA Pro 9-beta, Ghidra
+\resumeItemListEnd
+}
+
+\resumeResearchExp
+  {0-day in Zlog: CVE-2024-22857 [\href{https://www.cybersecurity-help.cz/vdb/SB2024022842}{\faIcon{globe}}] }
+{
+\resumeItemListStart
+  \item Conducted fuzzing of zlog, leading to the discovery of a critical 0-day vulnerability (CVE-2024-22857)
+  \item Successfully identified and reported the vulnerability, which allowed arbitrary code execution
+  \item Developed proof-of-concept (PoC) exploit to demonstrate the feasibility of the attack and assisted in proposing mitigations
+  \item Collaborated with the vendor to ensure a timely patch and public disclosure of the vulnerability
+  \item Tools used: AFL++, elixir, gdb, git
+\resumeItemListEnd
+}
+
+\resumeResearchExp
+  {n-day (Dirty Pipe) - CVE-2022-0847 [\href{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-25279}{\faIcon{globe}}] }
+{
+\resumeItemListStart
+  \item Explored different data-only attacks in Linux kernel
+  \item Looked into the in-memory buffer management inside kernel
+  \item Following the source of pipe IPC in Linux kernel using elixir.bootlin, wrote a PoC for the CVE-2022-0847
+  \item Tools used: Elixir Bootlin, GDB with bata24/gef, QEMU
+\resumeItemListEnd
+}
+
+\resumeResearchExp
+  {Vulnerability Research \& Exploit Development for Android Kernel [\href{https://github.com/locus-x64/vred-notes}{\faIcon{globe}}] }
+{
+\resumeItemListStart
+  \item Final Year Project (FYP) during Bachelor
+  \item Supervised by Dr. Muhammad Arif Butt \href{https://arif.phd}{(arif.phd)}
+  \item Started binary exploitation from Linux user-land and completed with kernel-land exploitation
+  \item Conducted n-day research on CVE-2019-2215
+\resumeItemListEnd
+}
+\vspace{-7mm}
+\resumeSubHeadingListEnd
+
+\section{\textbf{Skills}}
+\vspace{-0.4mm}
+ \resumeHeadingSkillStart
+  \resumeSubItem{Programming: }
+    {ANSI C, Assembly x86-64/ARM, Bash, Python}
+  \resumeSubItem{Research: }
+    {Linux Kernel, Mobile Baseband, Android Kernel, Linux Runtime, Python Interpreter, JVMTi}
+  \resumeSubItem{Tools: }
+    {QEMU, VMWare Workstation, IDA Pro \href{https://p.ost2.fyi/certificates/dac47c9287304e249e34062bd568ffe7}{(ost2 certified)}, Ghidra, GDB with gef, AFL++, elixir, CodeQL, Kali Toolchain, FlareVM Toolchain }
+  \resumeSubItem{Operating System: }
+    {Linux (Ubuntu), Android}
+    \resumeSubItem{Open Source Contributions: }
+    {zlog(vulnerability patch), Elixir Core Reference, Havoc (C2) Framework,  pwncollege, Hacktoberfest contributor}
+
+ \resumeHeadingSkillEnd
+
+\section{\textbf{Education}}
+\vspace{-0.4mm}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+{PUCIT, University of the Punjab}{Lahore, Pakistan}
+{Bachelor of Computer Science}{Oct 2019 - July 2023}
+\resumeItemListStart
+\item GPA: 3.58/4.00
+\item Campus Lead by Google Developer Student Clubs [\href{http://g.dev/alirazamumtaz}{\faIcon{globe}}]
+\item President of PUCon23 (National Tech Event by University of the Punjab) [\href{https://pucit.edu.pk/national-programming-competition-pucon23/}{\faIcon{globe}}]
+\resumeItemListEnd
+
+\resumeSubheading
+{Punjab Group of Colleges}{Okara, Pakistan}
+{Intermediate of Computer Science (ICS)}{Aug 2017 - Oct 2019}
+\resumeItemListStart
+\item Grade: 90.54\%
+\item Board Topper [\href{https://pgc.edu/wp-content/uploads/2019/10/69807212_2482536158459889_3093261925052579840_o_2482536155126556.png}{\faIcon{globe}}]
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+\vspace{-6mm}
+
+
+
+\section{\textbf{University Projects}}
+\vspace{-0.4mm}
+\resumeSubHeadingListStart
+
+\resumeProject
+  {Unix Shell]}
+  {Tools: C, gdb, Makefile, Linux Syscalls}
+  {}
+  {{}[\href{https://github.com/locus-x64/system-programming/tree/master/linux-shell}{\textcolor{darkblue}{\faGithub}}]}
+\resumeItemListStart
+  \item An effort to write the *nix-based shell to gain an understanding of how the shell works and how OS creates and handles processes and allows processes to communicate with each other through its IPC interface
+\resumeItemListEnd
+
+\resumeProject
+  {Exploit Scripts}
+  {Tools: C, Python, x86-64 Assembly}
+  {}
+  {{}[\href{https://github.com/locus-x64/exploit-development}{\textcolor{darkblue}{\faGithub}}]}
+\resumeItemListStart
+  \item Basic scripts that I have written to solve some exploitation challenges
+\resumeItemListEnd
+
+\resumeProject
+  {Hack Assembler}
+  {Tools: C++, gdb}
+  {}
+  {{}[\href{https://github.com/locus-x64/hack-assembler}{\textcolor{darkblue}{\faGithub}}]}
+\resumeItemListStart
+  \item A 16-bit machine language assembler for the 16-bit Hack Assembly Language. It was done as part of building a complete 16-bit computer during the Computer Organization Assembly Language Course
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+
+
+% \section{\textbf{Honors and Awards}}
+% \vspace{-0.4mm}
+% \resumeSubHeadingListStart
+
+% \resumeProject
+%   {Award Name A}
+%   {Awarding Institution/Organization}
+%   {Month Year}
+%   {{}[\href{https://award-link-a.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Brief description of the award and its significance
+%   \item Impact or recognition associated with the award
+% \resumeItemListEnd
+
+% \resumeProject
+%   {Award Name B}
+%   {Awarding Institution/Organization}
+%   {Month Year}
+%   {{}[\href{https://award-link-b.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Brief description of the award and its significance
+%   \item Impact or recognition associated with the award
+% \resumeItemListEnd
+
+% \resumeProject
+%   {Competition Achievement}
+%   {Competition Name, Organizing Body}
+%   {Month Year}
+%   {{}[\href{https://competition-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Specific achievement or rank in the competition
+%   \item Skills or abilities demonstrated through this achievement
+% \resumeItemListEnd
+
+% \resumeSubHeadingListEnd
+
+% \vspace{-6mm}
+% \section{\textbf{Leadership Experience}}
+% \vspace{-0.4mm}
+% \resumeSubHeadingListStart
+% \resumeProject
+%   {Leadership Role A}
+%   {Organization/Institution Name}
+%   {Month Year - Month Year}
+%   {{}[\href{https://organization-a-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Key responsibility or achievement in this role
+%   \item Quantifiable impact or improvement made during tenure
+%   \item Initiative taken or project led
+% \resumeItemListEnd
+
+% \resumeProject
+%   {Leadership Role B}
+%   {Organization/Institution Name}
+%   {Month Year - Month Year}
+%   {{}[\href{https://organization-b-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Key responsibility or achievement in this role
+%   \item Quantifiable impact or improvement made during tenure
+%   \item Initiative taken or project led
+% \resumeItemListEnd
+
+% \resumeSubHeadingListEnd
+
+% \vspace{-6mm}
+
+% \section{\textbf{Volunteer Experience}}
+% \vspace{-0.4mm}
+% \resumeSubHeadingListStart
+% \resumeProject
+%   {Volunteer Role A}
+%   {Organization Name}
+%   {Month Year - Month Year}
+%   {{}[\href{https://volunteer-org-a-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Key responsibility or contribution in this role
+%   \item Impact of your volunteer work
+%   \item Skills developed or applied during this experience
+% \resumeItemListEnd
+
+% \resumeProject
+%   {Volunteer Role B}
+%   {Organization Name}
+%   {Month Year - Present}
+%   {{}[\href{https://volunteer-org-b-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
+% \resumeItemListStart
+%   \item Key responsibility or contribution in this role
+%   \item Impact of your volunteer work
+%   \item Skills developed or applied during this experience
+% \resumeItemListEnd
+
+% \resumeSubHeadingListEnd
+% \vspace{-6mm}
+
+% \section{\textbf{Professional Memberships}}
+% \vspace{-0.4mm}
+% \resumeSubHeadingListStart
+% \resumePOR{Professional Organization A}
+%     {, Membership ID: XXXXXXXX}
+%     {Month Year - Present}
+% \resumePOR{Professional Organization B}
+%     {, \href{https://membership-certificate-link.com}{Membership ID: XXXXXXXX}}
+%     {Month Year - Present}
+% \resumePOR{Professional Organization C}
+%     {, \href{https://membership-certificate-link.com}{Membership ID: XXXXXXXX}}
+%     {Month Year - Present}
+
+% \resumeSubHeadingListEnd
+% \vspace{-6mm}
+
+% \section{\textbf{Certifications}}
+% \vspace{-0.2mm}
+% \resumeSubHeadingListStart
+% \resumePOR{}{\href{https://certification-link-a.com}{
+% \textbf{Certification A}
+% }}{Month Year}
+% \resumePOR{}{
+% \textbf{Certifying Body:} {{\href{https://certification-link-b.com}{Certification B}}}}{Month Year}
+% \resumePOR{}{
+% \textbf{Certifying Body:} {{\href{https://certification-link-c.com}{Certification C}}}}{Month Year}
+% \resumePOR{}{\href{https://certification-link-d.com}{
+% \textbf{Certification D}
+% }}{Month Year}
+
+% \resumeSubHeadingListEnd
+% \vspace{-6mm}
+
+\end{document}
