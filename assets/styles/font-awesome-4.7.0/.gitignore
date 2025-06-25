@@ -1,0 +1,12 @@
+# Font Awesome build files and logs
+testdisk.log
+
+# Sass cache
+.sass-cache/
+
+# CSS source maps
+*.css.map
+
+# Temporary files
+*.tmp
+*~

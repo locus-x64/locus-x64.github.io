@@ -1,14 +1,50 @@
-# ignore latex files
+# LaTeX auxiliary files
 *.aux
 *.bbl
+*.bcf
 *.blg
+*.brf
+*.fdb_latexmk
+*.fls
 *.log
 *.out
-*.toc
-*.fls
-*.fdb_latexmk
+*.run.xml
 *.synctex.gz
+*.toc
+*.lof
+*.lot
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.maf
+*.mtc
+*.mtc0
 *.nav
+*.nlo
 *.snm
 *.vrb
-*.dvi
+*.xdy
+*.tdo
+*.lol
+
+# LaTeX temporary files
+*~
+.#*
+*.tmp
+
+# LaTeX Beamer
+*.figlist
+*.makefile
+*.fls
+*.fdb_latexmk
+*.auxlock
+
+# Keep only .tex and .pdf files
+# All other LaTeX build artifacts will be ignored

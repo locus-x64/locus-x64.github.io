@@ -1,0 +1,13 @@
+# Image thumbnails
+Thumbs.db
+*.thumb
+
+# Temporary image files
+*.tmp
+*~
+
+# Generated CSS files (if using preprocessors)
+*.css.map
+
+# Editor temp files
+.DS_Store
