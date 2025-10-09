@@ -440,4 +440,4 @@ Happy Learning and of course:
 
 > Learning Linux is fun with [Dr. Arif Butt](http://www.arifbutt.me/)
 > 
-— locus_x64
+— locus-x64

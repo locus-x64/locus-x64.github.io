@@ -130,4 +130,4 @@ You can then manage your Elixir instance with `docker-compose up -d` and `docker
 
 Each tag in your Git repository will be indexed by Elixir and identified as a version of the project. You can navigate through the different versions of the project.
 
-~ locus_x64
+~ locus-x64
