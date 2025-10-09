@@ -2,7 +2,7 @@
 title: Posts
 ---
 
-## ali@pwnworld:/posts$
+## locus-x64@pwn:/posts$
 
 <ul>
     {% for post in site.posts %}
