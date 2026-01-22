@@ -157,7 +157,8 @@
 
 % Header
 \begin{center}
-    {\Huge\textbf{ALI RAZA}}\\
+    {\Huge\textbf{ALI RAZA}}\\[2mm]
+
     {\textit{Vulnerability Researcher}}
 \end{center}
 \vspace{-5mm}
@@ -187,7 +188,7 @@
 \section{\textbf{Objective}}
 \vspace{1mm}
 \small{
-Security researcher with a strong background in C and assembly, focusing on fuzzing, reverse engineering, and code auditing to uncover and remediate software flaws. I develop robust PoCs, collaborate closely with cyber threat experts, and design practical mitigations across userland and kernel to enhance system security.
+Security researcher with a strong background in C and assembly, focusing on fuzzing, reverse engineering, and code auditing to uncover and remediate software flaws. I develop robust PoCs, collaborate closely with threat researchers, and design practical mitigations across userland and the kernel to enhance system security.
 }
 \vspace{-2mm}
 
@@ -198,22 +199,33 @@ Security researcher with a strong background in C and assembly, focusing on fuzz
       {{Ebryx (Pvt.) Ltd. [\href{https://www.ebryx.com}{\faIcon{globe}}]}}{Lahore, Pakistan}
       {Vulnerability Researcher}{Mar 2023 - Current}
       \resumeItemListStart
-        \item Collaborated with senior threat researchers to investigate vulnerabilities end-to-end and translate findings into actionable detections and mitigations
-        \item Conducted targeted fuzzing (AFL++, syzkaller) across userland and Linux kernel; triaged crashes, minimized inputs, and authored PoCs
-        \item Discovered and disclosed a 0-day in \texttt{python-socketio} (CVE-2025-61765) \href{https://github.com/miguelgrinberg/python-socketio/security/advisories/GHSA-g8c6-8fjj-2r4m}{[\faIcon{globe}]} with PoC and remediation guidance, coordinating with the maintainer
-        \item Discovered and disclosed CVE-2024-22857 in zlog via AFL++; developed PoC exploit and proposed remediation, working with maintainers through coordinated disclosure
-        \item Performed secure code reviews and static analysis of C/C++ codebases using CodeQL and manual auditing; hardened CPython against memory corruption classes
-        \item Performed reverse engineering of firmware and system components with IDA Pro and Ghidra to pinpoint vulnerable code paths and exploitation primitives
+        \item Collaborated with senior threat researchers to investigate vulnerabilities end to end and translate findings into actionable detections and mitigations
+        \item Conducted targeted fuzzing (AFL++, syzkaller) across userland and the Linux kernel; triaged crashes, minimized inputs, and authored PoCs
+        \item Discovered and disclosed 0-day in MindsDB (CVE-2025-68472) with a detailed report and suggested a fix for the vulnerability
+        \item Discovered and disclosed a 0-day in \texttt{python-socketio} (CVE-2025-61765) with a PoC and remediation guidance, coordinating with the maintainer
+        \item Discovered and disclosed 0-day in zlog (CVE-2024-22857) via AFL++; developed a PoC exploit and proposed remediation, working with maintainers through coordinated disclosure
+        \item Performed secure code reviews and static analysis of C/C++ codebases using CodeQL and manual auditing; hardened CPython against classes of memory corruption
+        \item Reverse engineered firmware and system components with IDA Pro and Ghidra to pinpoint vulnerable code paths and exploitation primitives
         \item Designed kernel-level techniques (Netfilter, LKMs) to detect and mitigate path traversal and ASLR brute-force attacks on Linux
         \item Built a JVMTI-based userland agent to detect Java deserialization attack primitives at runtime on Linux
-        \item Conducted n-day research in Linux kernel exploitation, and formalized an attack matrix mapping exploitable kernel objects, prerequisites, and post-exploitation techniques
+        \item Conducted n-day research in Linux kernel exploitation and formalized an attack matrix mapping exploitable kernel objects, prerequisites, and post-exploitation techniques
+      \resumeItemListEnd
+
+      \resumeSubheading
+      {{Redseclabs (Pvt.) Ltd. [\href{https://www.redseclabs.com/}{\faIcon{globe}}]}}{Contract - Remote}
+      {Vulnerability Researcher}{July 2025 - December 2025}
+      \resumeItemListStart
+        \item Initially worked on Android kernel n-day exploitation, then later shifted to Ubuntu-specific Linux kernel n-day research
+        \item Worked on local privilege escalation (LPE) via Ubuntu system applications (e.g., D-Bus, Apport, etc)
+        \item Subsequently analyzed PureVPN for the same objective
       \resumeItemListEnd
 
   \resumeSubheading
     {University of the Punjab [\href{https://www.pu.edu.pk}{\faIcon{globe}}]}{Lahore, Pakistan}
     {Teaching Assistant}{Oct 2022 - Feb 2023}
     \resumeItemListStart
-      \item Designed lab coursework and assessments; provided hands-on guidance and mentorship to students
+      \item Designed lab coursework and assessments
+      \item Provided hands-on guidance and mentorship to students
     \resumeItemListEnd
   \resumeSubHeadingListEnd
 \vspace{-6mm}
@@ -223,12 +235,23 @@ Security researcher with a strong background in C and assembly, focusing on fuzz
 \resumeSubHeadingListStart
 
 \resumeResearchExp
+{0-day in MindsDB: CVE-2025-68472 \href{https://github.com/mindsdb/mindsdb/security/advisories/GHSA-qqhf-pm3j-96g7}{[\faIcon{globe}]}}
+{
+  \resumeItemListStart
+  \item Identified improper sanitization of a parsed path, leading to arbitrary file read and removal
+  \item Coordinated with the maintainers by providing a PoC and recommendations to fix the vulnerability
+  \item Tools: Python, Git
+  \resumeItemListEnd
+}
+
+\resumeResearchExp
   {0-day in \texttt{python-socketio}: CVE-2025-61765 \href{https://github.com/miguelgrinberg/python-socketio/security/advisories/GHSA-g8c6-8fjj-2r4m}{[\faIcon{globe}]}}
 {
 \resumeItemListStart
   \item Identified and reported a security flaw in \texttt{python-socketio}; reproduced impact with a PoC and supported mitigation guidance
   \item Collaborated with the maintainer for coordinated disclosure and release of a fix/advisory
-  \item Tools used: Python, pytest, git
+  \item Wrote a blog post and had it published on the client's website \href{https://www.bluerock.io/post/cve-2025-61765-bluerock-discovers-critical-rce-in-socket-io-ecosystem}{[\faIcon{globe}]}
+  \item Tools: Python, pytest, Git
 \resumeItemListEnd
 }
 
@@ -239,8 +262,8 @@ Security researcher with a strong background in C and assembly, focusing on fuzz
   \item Fuzzed zlog and discovered a critical vulnerability enabling arbitrary code execution
   \item Built a PoC to demonstrate exploitability and collaborated on mitigation guidance
   \item Coordinated disclosure with the maintainer to patch and publish advisories
-  \item Tools: AFL++, Elixir Bootlin, gdb, git
-\resumeItemListEnd
+  \item Tools: AFL++, Elixir Bootlin, GDB, Git
+  \resumeItemListEnd
 }
 
 \resumeResearchExp
@@ -258,7 +281,7 @@ Security researcher with a strong background in C and assembly, focusing on fuzz
 {
 \resumeItemListStart
   \item Reversed Samsung Exynos modem firmware (Shannon RTOS) with IDA Python and Ghidra
-  \item Analyzed PAL allocator and identified vulnerable code paths for the CVE statically
+  \item Analyzed the PAL allocator and identified vulnerable code paths for the CVE statically
   \item Emulated the firmware with FirmWire to validate understanding and hypotheses
   \item Tools: FirmWire, IDA Pro 9-beta, Ghidra
 \resumeItemListEnd
