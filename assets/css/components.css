@@ -208,6 +208,10 @@
   z-index: 45;
 }
 
+.search-modal[hidden] {
+  display: none !important;
+}
+
 .search-panel {
   width: min(760px, 92vw);
   padding: var(--space-4);
