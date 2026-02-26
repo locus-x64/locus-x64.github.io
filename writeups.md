@@ -1,5 +1,11 @@
-{% for item in site.writeups %}
-  <h2>{{ item.title }}</h2>
-  <p>{{ item.description }}</p>
-  <p><a href="{{ item.url }}">{{ item.title }}</a></p>
-{% endfor %}
+---
+layout: default
+title: Writeups
+permalink: /writeups/
+---
+
+<section class="page-title-block">
+  <p class="kicker">writeups.queue()</p>
+  <h1>{{ page.title }}</h1>
+  <p class="muted">A dedicated writeups collection is planned and will be published here.</p>
+</section>

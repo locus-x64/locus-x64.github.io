@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+<section class="hero">
+  <p class="kicker">security.researcher()</p>
+  <h1>Ali Raza</h1>
+  <p>{{ site.description }}</p>
+  <div class="hero-actions">
+    <a class="btn" href="{{ '/posts/' | relative_url }}">Read Posts</a>
+    <a class="btn btn-secondary" href="{{ '/CV/Ali_Raza_CV.pdf' | relative_url }}">Resume</a>
+  </div>
+</section>
+
+<section class="page-title-block">
+  <p class="kicker">Recent Drops</p>
+  <h2>Latest Research Notes</h2>
+</section>
+
+<section class="cards-grid">
+  {% for post in site.posts limit: 5 %}
+    {% include post-card.html %}
+  {% endfor %}
+</section>
+
+<div class="section-link">
+  <a class="btn" href="{{ '/archive/' | relative_url }}">Browse Full Archive</a>
+</div>

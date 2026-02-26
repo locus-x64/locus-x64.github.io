@@ -9,6 +9,7 @@ author: "Ali Raza"
 comments: true
 permalink: /posts/linux-kernel-compilation
 description: "We can make changes to the Linux kernel and compile it to make a custom copy. For that, I have written a detailed tutorial for you. In this post, You'll also learn how to write a custom man page for your custom syscall."
+image: /assets/images/posts/2022-04-13-Linux-Kernel-Compilation-imgs/1.jpeg
 ---
 
 

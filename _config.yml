@@ -1,14 +1,19 @@
 title: locus-x64@pwn$
 description: >- # this means to ignore newlines until "baseurl:"
   Exploring kernel exploitation.
+author: Ali Raza
+url: https://locus-x64.github.io
+baseurl: ""
+
+social:
+  github: https://github.com/locus-x64
+  twitter: https://twitter.com/locus_x64
+  linkedin: https://www.linkedin.com/in/locus-x64
+  email: mailto:elirazamumtaz@gmail.com
 
 # Build settings
-
-#theme: jekyll-theme-hacker
-remote_theme: pages-themes/hacker@v0.2.0
 plugins:
   - jekyll-feed
-  - jekyll-remote-theme
   - jekyll-sitemap
 
 future: true
@@ -32,14 +37,14 @@ future: true
 #   - vendor/gems/
 #   - vendor/ruby/
 markdown: kramdown
-google_analytics: G-HSTC4ENYHY
+highlighter: rouge
+permalink: /posts/:title/
 
 #theme: jekyll-theme-architect
 
-# Adding collections other than main posts page
-collections:
-  writeups:
-    output: true
-# Adding Pagination
-#paginate: 5
-#paginate_path: "/posts/page:num"
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post

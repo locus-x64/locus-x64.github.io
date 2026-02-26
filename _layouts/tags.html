@@ -1,20 +1,20 @@
 ---
 layout: default
-title: Posts
-permalink: /posts/
 ---
 
 <section class="page-title-block">
-  <p class="kicker">post.list()</p>
+  <p class="kicker">Tag Console</p>
   <h1>{{ page.title }}</h1>
-  <p class="muted">All writeups, CVE notes, and low-level experiments.</p>
+  <p class="muted">Filter posts by topic without leaving the page.</p>
 </section>
 
 <section class="tags-filter" data-tags-filter>
   <button class="tag active" type="button" data-tag="all">all</button>
   {% assign all_tags = site.tags | sort %}
   {% for item in all_tags %}
-    <button class="tag" type="button" data-tag="{{ item[0] | downcase }}">{{ item[0] }}</button>
+    <button class="tag" id="{{ item[0] | slugify }}" type="button" data-tag="{{ item[0] | downcase }}">
+      {{ item[0] }} ({{ item[1].size }})
+    </button>
   {% endfor %}
 </section>
 

@@ -201,9 +201,9 @@ Security researcher with a strong background in C and assembly, focusing on fuzz
       \resumeItemListStart
         \item Collaborated with senior threat researchers to investigate vulnerabilities end to end and translate findings into actionable detections and mitigations
         \item Conducted targeted fuzzing (AFL++, syzkaller) across userland and the Linux kernel; triaged crashes, minimized inputs, and authored PoCs
-        \item Discovered and disclosed 0-day in MindsDB (CVE-2025-68472) with a detailed report and suggested a fix for the vulnerability
-        \item Discovered and disclosed a 0-day in \texttt{python-socketio} (CVE-2025-61765) with a PoC and remediation guidance, coordinating with the maintainer
         \item Discovered and disclosed 0-day in zlog (CVE-2024-22857) via AFL++; developed a PoC exploit and proposed remediation, working with maintainers through coordinated disclosure
+        \item Discovered and disclosed a 0-day in \texttt{python-socketio} (CVE-2025-61765) with a PoC and remediation guidance, coordinating with the maintainer
+        \item Discovered and disclosed 0-day in MindsDB (CVE-2025-68472) with a detailed report and suggested a fix for the vulnerability
         \item Performed secure code reviews and static analysis of C/C++ codebases using CodeQL and manual auditing; hardened CPython against classes of memory corruption
         \item Reverse engineered firmware and system components with IDA Pro and Ghidra to pinpoint vulnerable code paths and exploitation primitives
         \item Designed kernel-level techniques (Netfilter, LKMs) to detect and mitigate path traversal and ASLR brute-force attacks on Linux
@@ -233,6 +233,16 @@ Security researcher with a strong background in C and assembly, focusing on fuzz
 \section{\textbf{Research Experience}}
 \vspace{-0.4mm}
 \resumeSubHeadingListStart
+
+\resumeResearchExp
+{0-day in OpenClaw(clawbot): CVE-2026-26972 \href{https://github.com/openclaw/openclaw/security/advisories/GHSA-xwjm-j929-xq7c}{[\faIcon{globe}]}}
+{
+  \resumeItemListStart
+  \item Discovered path traversal in OpenClaw/Clawbot API that enabled arbitrary file read/write and command execution
+  \item Built and shared a PoC with maintainers; provided remediation guidance and coordinated disclosure timelines
+  \item Tools: semgrep, copilot
+  \resumeItemListEnd
+}
 
 \resumeResearchExp
 {0-day in MindsDB: CVE-2025-68472 \href{https://github.com/mindsdb/mindsdb/security/advisories/GHSA-qqhf-pm3j-96g7}{[\faIcon{globe}]}}

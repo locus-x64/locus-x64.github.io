@@ -8,6 +8,7 @@ author: "Ali Raza"
 comments: true
 permalink: /posts/setup-elixir
 description: "Explore source code in your browser - Particularly useful for the Linux kernel and other low-level projects in C/C++"
+image: /assets/images/posts/2024-03-27-setup-elixir/setup-elixir-backdrop.jpg
 
 ---
 <!-- Post Image -->

@@ -1,0 +1,19 @@
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="brand-prefix">$</span> {{ site.title }}
+    </a>
+
+    <button class="menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" data-menu>
+      {% for item in site.data.navigation %}
+        <a href="{{ item.url | relative_url }}" {% if page.url == item.url %}class="active"{% endif %}>{{ item.title }}</a>
+      {% endfor %}
+      <button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>◐</button>
+      <button class="search-open" type="button" aria-label="Open search" data-search-open>Search</button>
+    </nav>
+  </div>
+</header>

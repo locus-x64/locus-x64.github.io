@@ -1,0 +1,24 @@
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--accent), transparent 72%) 1px, transparent 0),
+    linear-gradient(to bottom right, color-mix(in oklab, var(--accent), transparent 96%), transparent 35%);
+  background-size: 28px 28px, 100% 100%;
+  opacity: 0.35;
+  animation: pulseGrid 8s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGrid {
+  from {
+    transform: translateY(0);
+    opacity: 0.26;
+  }
+
+  to {
+    transform: translateY(-8px);
+    opacity: 0.4;
+  }
+}
