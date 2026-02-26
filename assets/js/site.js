@@ -19,29 +19,6 @@ if (themeButton) {
   });
 }
 
-const searchModal = document.querySelector('[data-search-modal]');
-const searchOpen = document.querySelector('[data-search-open]');
-const searchClose = document.querySelector('[data-search-close]');
-const searchInput = document.querySelector('[data-search-input]');
-
-function toggleSearch(open) {
-  if (!searchModal) return;
-  searchModal.hidden = !open;
-  if (open && searchInput) searchInput.focus();
-}
-
-if (searchOpen) searchOpen.addEventListener('click', () => toggleSearch(true));
-if (searchClose) searchClose.addEventListener('click', () => toggleSearch(false));
-if (searchModal) {
-  searchModal.addEventListener('click', (event) => {
-    if (event.target === searchModal) toggleSearch(false);
-  });
-}
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') toggleSearch(false);
-});
-
 const tagsFilter = document.querySelector('[data-tags-filter]');
 const tagResults = document.querySelector('[data-tag-results]');
 
