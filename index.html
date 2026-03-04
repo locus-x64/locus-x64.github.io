@@ -25,6 +25,16 @@
 
 <body>
     <div id="root"></div>
+        <script>
+            (function () {
+                const redirect = new URLSearchParams(window.location.search).get('p')
+                if (!redirect) return
+
+                const restoredPath = decodeURIComponent(redirect)
+                const newUrl = `${window.location.origin}${restoredPath}${window.location.hash}`
+                window.history.replaceState(null, '', newUrl)
+            })()
+        </script>
     <script type="module" src="/src/main.tsx"></script>
 </body>
 

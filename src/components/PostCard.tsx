@@ -6,10 +6,9 @@ import { motion } from 'framer-motion'
 
 interface PostCardProps {
   post: BlogPost
-  onClick: () => void
 }
 
-export function PostCard({ post, onClick }: PostCardProps) {
+export function PostCard({ post }: PostCardProps) {
   return (
     <motion.div
       whileHover={{ y: -4 }}
@@ -18,7 +17,6 @@ export function PostCard({ post, onClick }: PostCardProps) {
     >
       <Card
         className="relative h-full p-6 cursor-pointer border-border/80 hover:border-primary/80 transition-all duration-250 bg-card/90 backdrop-blur-sm hover:shadow-xl hover:shadow-primary/10 group overflow-hidden"
-        onClick={onClick}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-accent/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         

@@ -6,13 +6,13 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { MagnifyingGlass, X, Tag, CaretDown, CaretUp } from '@phosphor-icons/react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 interface BlogListingProps {
   posts: BlogPost[]
-  onPostClick: (post: BlogPost) => void
 }
 
-export function BlogListing({ posts, onPostClick }: BlogListingProps) {
+export function BlogListing({ posts }: BlogListingProps) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
@@ -187,10 +187,9 @@ export function BlogListing({ posts, onPostClick }: BlogListingProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05, duration: 0.3 }}
               >
-                <PostCard
-                  post={post}
-                  onClick={() => onPostClick(post)}
-                />
+                <Link to={`/blog/${post.slug}`} className="block h-full">
+                  <PostCard post={post} />
+                </Link>
               </motion.div>
             ))}
           </motion.div>

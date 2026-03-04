@@ -2,13 +2,13 @@ import { Author } from '@/types/blog'
 import { Button } from '@/components/ui/button'
 import { GithubLogo, TwitterLogo, LinkedinLogo, ArrowRight, Code, ShieldCheck, Bug } from '@phosphor-icons/react'
 import { Logo } from '@/components/Logo'
+import { Link } from 'react-router-dom'
 
 interface LandingPageProps {
   author: Author
-  onEnterBlog: () => void
 }
 
-export function LandingPage({ author, onEnterBlog }: LandingPageProps) {
+export function LandingPage({ author }: LandingPageProps) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
@@ -57,13 +57,15 @@ export function LandingPage({ author, onEnterBlog }: LandingPageProps) {
         </div>
 
         <div className="pt-8 space-y-4">
-          <Button 
+          <Button
+            asChild
             size="lg"
             className="text-lg px-8 py-6 group shadow-lg hover:shadow-xl transition-all duration-300"
-            onClick={onEnterBlog}
           >
-            Explore Research
-            <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            <Link to="/blog">
+              Explore Research
+              <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </Button>
 
           <div className="flex items-center justify-center gap-3 pt-4">

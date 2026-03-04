@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BlogPost } from '@/types/blog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -7,16 +7,43 @@ import { ArrowLeft, Clock, CalendarBlank } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { CodeBlock } from '@/components/CodeBlock'
 import { MermaidBlock } from '@/components/MermaidBlock'
+import { Link, useParams } from 'react-router-dom'
+import { loadPost } from '@/lib/postLoader'
 
-interface PostDetailProps {
-  post: BlogPost
-  onBack: () => void
-}
+export function PostDetail() {
+  const { slug } = useParams<{ slug: string }>()
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-export function PostDetail({ post, onBack }: PostDetailProps) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [post.id])
+  }, [slug])
+
+  useEffect(() => {
+    let mounted = true
+
+    const fetchPost = async () => {
+      if (!slug) {
+        setPost(null)
+        setIsLoading(false)
+        return
+      }
+
+      setIsLoading(true)
+      const loadedPost = await loadPost(slug)
+
+      if (mounted) {
+        setPost(loadedPost)
+        setIsLoading(false)
+      }
+    }
+
+    fetchPost()
+
+    return () => {
+      mounted = false
+    }
+  }, [slug])
 
   const renderInline = (text: string): React.ReactNode[] => {
     const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|!\[[^\]]*\]\([^)]+\))/)
@@ -248,6 +275,28 @@ export function PostDetail({ post, onBack }: PostDetailProps) {
     return elements
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-[70vh] bg-background text-foreground flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-pulse text-primary text-lg">Loading post...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!post) {
+    return (
+      <div className="max-w-4xl mx-auto px-6 md:px-8 py-16 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Post not found</h1>
+        <p className="text-muted-foreground mb-8">The requested blog post does not exist or could not be loaded.</p>
+        <Button asChild variant="outline">
+          <Link to="/blog">Back to posts</Link>
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -257,12 +306,14 @@ export function PostDetail({ post, onBack }: PostDetailProps) {
     >
       <div className="max-w-4xl mx-auto px-6 md:px-8 py-10 md:py-16">
         <Button
+          asChild
           variant="ghost"
-          onClick={onBack}
           className="mb-10 text-muted-foreground hover:text-primary transition-all duration-200 hover:translate-x-[-4px] group"
         >
-          <ArrowLeft size={20} className="mr-2 group-hover:animate-pulse" />
-          Back to posts
+          <Link to="/blog">
+            <ArrowLeft size={20} className="mr-2 group-hover:animate-pulse" />
+            Back to posts
+          </Link>
         </Button>
 
         <article className="prose">

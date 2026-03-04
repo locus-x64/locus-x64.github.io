@@ -2,13 +2,13 @@ import { Author } from '@/types/blog'
 import { Button } from '@/components/ui/button'
 import { GithubLogo, TwitterLogo, LinkedinLogo } from '@phosphor-icons/react'
 import { Logo } from '@/components/Logo'
+import { Link } from 'react-router-dom'
 
 interface HeaderProps {
   author: Author
-  onLogoClick?: () => void
 }
 
-export function Header({ author, onLogoClick }: HeaderProps) {
+export function Header({ author }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/90 backdrop-blur-md">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/3 via-transparent to-accent/3 pointer-events-none" />
@@ -16,9 +16,9 @@ export function Header({ author, onLogoClick }: HeaderProps) {
       
       <div className="relative max-w-7xl mx-auto px-6 md:px-8 py-4 md:py-5">
         <div className="flex items-center justify-between">
-          <div 
+          <Link
+            to="/"
             className="flex items-center gap-3 md:gap-4 cursor-pointer group"
-            onClick={onLogoClick}
           >
             <div className="relative transition-all duration-200 group-hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
@@ -32,7 +32,7 @@ export function Header({ author, onLogoClick }: HeaderProps) {
               </h1>
               <p className="text-xs text-muted-foreground font-mono">{author.handle}</p>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-1">
             <Button
