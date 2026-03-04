@@ -112,7 +112,7 @@
   <!-- Center: Kernel/PIDFD magic -->
   <g filter="url(#shadowFilter)">
     <!-- Kernel box -->
-    <rect x="450" y="220" width="300" height="200" rx="12" fill="#1the2e293b" stroke="url(#warnGrad)" stroke-width="2" opacity="0.9"/>
+    <rect x="450" y="220" width="300" height="200" rx="12" fill="#1e293b" stroke="url(#warnGrad)" stroke-width="2" opacity="0.9"/>
     
     <!-- Kernel header -->
     <rect x="450" y="220" width="300" height="40" rx="12" fill="url(#warnGrad)" opacity="0.8"/>
