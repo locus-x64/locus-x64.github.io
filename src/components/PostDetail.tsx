@@ -46,10 +46,13 @@ export function PostDetail() {
   }, [slug])
 
   const renderInline = (text: string): React.ReactNode[] => {
-    const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|!\[[^\]]*\]\([^)]+\))/)
+    const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|_[^_]+_|`[^`]+`|\[[^\]]+\]\([^)]+\)|!\[[^\]]*\]\([^)]+\))/)
     return parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**')) {
         return <strong key={i} className="font-semibold text-primary">{part.slice(2, -2)}</strong>
+      }
+      if ((part.startsWith('*') && part.endsWith('*')) || (part.startsWith('_') && part.endsWith('_'))) {
+        return <em key={i} className="italic">{part.slice(1, -1)}</em>
       }
       if (part.startsWith('`') && part.endsWith('`')) {
         return (
