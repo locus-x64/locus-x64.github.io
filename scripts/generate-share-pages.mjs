@@ -47,7 +47,9 @@ function renderPostPage(post) {
 
     <script>
       (function () {
-        window.location.replace('${postPath}' + window.location.search + window.location.hash)
+        var fullPath = '${postPath}' + window.location.search
+        var redirect = '/?p=' + encodeURIComponent(fullPath)
+        window.location.replace(redirect + window.location.hash)
       })();
     </script>
   </head>

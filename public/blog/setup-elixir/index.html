@@ -21,7 +21,9 @@
 
     <script>
       (function () {
-        window.location.replace('/blog/setup-elixir' + window.location.search + window.location.hash)
+        var fullPath = '/blog/setup-elixir' + window.location.search
+        var redirect = '/?p=' + encodeURIComponent(fullPath)
+        window.location.replace(redirect + window.location.hash)
       })();
     </script>
   </head>

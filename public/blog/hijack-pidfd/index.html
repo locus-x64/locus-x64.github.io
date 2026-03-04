@@ -21,7 +21,9 @@
 
     <script>
       (function () {
-        window.location.replace('/blog/hijack-pidfd' + window.location.search + window.location.hash)
+        var fullPath = '/blog/hijack-pidfd' + window.location.search
+        var redirect = '/?p=' + encodeURIComponent(fullPath)
+        window.location.replace(redirect + window.location.hash)
       })();
     </script>
   </head>
