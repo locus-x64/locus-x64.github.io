@@ -6,7 +6,7 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/locus-x64.github.io/',
+  base: '/',
   plugins: [
     react(),
     tailwindcss(),
