@@ -92,6 +92,25 @@ export function PostDetail() {
     let i = 0
     let elementIndex = 0
 
+    const isTableDivider = (line: string) => {
+      const normalized = line.trim()
+      if (!normalized.includes('|')) return false
+      const cells = normalized
+        .replace(/^\|/, '')
+        .replace(/\|$/, '')
+        .split('|')
+        .map(cell => cell.trim())
+      return cells.length > 0 && cells.every(cell => /^:?-{3,}:?$/.test(cell))
+    }
+
+    const parseTableRow = (line: string) =>
+      line
+        .trim()
+        .replace(/^\|/, '')
+        .replace(/\|$/, '')
+        .split('|')
+        .map(cell => cell.trim())
+
     while (i < lines.length) {
       const line = lines[i]
 
@@ -185,6 +204,50 @@ export function PostDetail() {
           )
         }
         i++
+        continue
+      }
+
+      // Markdown table
+      if (
+        line.trim().startsWith('|') &&
+        i + 1 < lines.length &&
+        isTableDivider(lines[i + 1])
+      ) {
+        const headers = parseTableRow(line)
+        i += 2
+
+        const rows: string[][] = []
+        while (i < lines.length && lines[i].trim().startsWith('|')) {
+          rows.push(parseTableRow(lines[i]))
+          i++
+        }
+
+        elements.push(
+          <div key={elementIndex++} className="my-6 overflow-x-auto rounded-lg border border-border/60 bg-card/30">
+            <table className="w-full text-sm">
+              <thead className="bg-secondary/50">
+                <tr>
+                  {headers.map((header, idx) => (
+                    <th key={idx} className="px-4 py-3 text-left font-semibold text-foreground border-b border-border/60">
+                      {renderInline(header)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, rowIdx) => (
+                  <tr key={rowIdx} className="border-b border-border/40 last:border-b-0">
+                    {headers.map((_, colIdx) => (
+                      <td key={colIdx} className="px-4 py-3 text-foreground/90 align-top">
+                        {renderInline(row[colIdx] ?? '')}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
         continue
       }
 
@@ -290,7 +353,7 @@ export function PostDetail() {
 
   if (!post) {
     return (
-      <div className="max-w-4xl mx-auto px-6 md:px-8 py-16 text-center">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 py-16 text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Post not found</h1>
         <p className="text-muted-foreground mb-8">The requested blog post does not exist or could not be loaded.</p>
         <Button asChild variant="outline">
@@ -307,7 +370,7 @@ export function PostDetail() {
       transition={{ duration: 0.4 }}
       className="min-h-screen"
     >
-      <div className="max-w-4xl mx-auto px-6 md:px-8 py-10 md:py-16">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 py-10 md:py-16">
         <Button
           asChild
           variant="ghost"
@@ -319,7 +382,7 @@ export function PostDetail() {
           </Link>
         </Button>
 
-        <article className="prose">
+        <article className="prose max-w-none">
           <motion.div 
             className="mb-12"
             initial={{ opacity: 0, y: 10 }}
