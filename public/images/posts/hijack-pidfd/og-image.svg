@@ -1,0 +1,257 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Define gradients -->
+  <defs>
+    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="successGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="warnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadowFilter">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#darkGrad)"/>
+
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.3"/>
+
+  <!-- Title -->
+  <text x="600" y="80" font-family="monospace" font-size="48" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="2">
+    PIDFD_GETFD
+  </text>
+  <text x="600" y="120" font-family="monospace" font-size="20" fill="#64748b" text-anchor="middle">
+    Process File Descriptor Theft
+  </text>
+
+  <!-- Separator line -->
+  <line x1="100" y1="140" x2="1100" y2="140" stroke="url(#accentGrad)" stroke-width="2" opacity="0.5"/>
+
+  <!-- Left side: Exploit Process -->
+  <g filter="url(#shadowFilter)">
+    <!-- Exploit process box -->
+    <rect x="80" y="180" width="320" height="280" rx="12" fill="#1e293b" stroke="#3b82f6" stroke-width="2" opacity="0.9"/>
+    <title>Exploit Process (unprivileged)</title>
+    
+    <!-- Process header -->
+    <rect x="80" y="180" width="320" height="45" rx="12" fill="url(#accentGrad)" opacity="0.8"/>
+    <text x="240" y="210" font-family="monospace" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">
+      Exploit Process
+    </text>
+    
+    <!-- FD labels -->
+    <text x="100" y="245" font-family="monospace" font-size="13" fill="#94a3b8" font-weight="bold">
+      File Descriptors:
+    </text>
+    
+    <!-- fd 0, 1, 2 -->
+    <g>
+      <circle cx="120" cy="280" r="18" fill="#3b82f6" opacity="0.8"/>
+      <text x="120" y="286" font-family="monospace" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="bold">
+        0
+      </text>
+      <text x="160" y="286" font-family="monospace" font-size="11" fill="#cbd5e1">
+        → /dev/pts/X
+      </text>
+    </g>
+    
+    <g>
+      <circle cx="120" cy="320" r="18" fill="#3b82f6" opacity="0.8"/>
+      <text x="120" y="326" font-family="monospace" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="bold">
+        1
+      </text>
+      <text x="160" y="326" font-family="monospace" font-size="11" fill="#cbd5e1">
+        → /dev/pts/X
+      </text>
+    </g>
+    
+    <g>
+      <circle cx="120" cy="360" r="18" fill="#3b82f6" opacity="0.8"/>
+      <text x="120" y="366" font-family="monospace" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="bold">
+        2
+      </text>
+      <text x="160" y="366" font-family="monospace" font-size="11" fill="#cbd5e1">
+        → /dev/pts/X
+      </text>
+    </g>
+    
+    <!-- Dormant status -->
+    <rect x="100" y="400" width="280" height="50" rx="6" fill="#334155" opacity="0.6" border="1px solid #64748b"/>
+    <text x="240" y="420" font-family="monospace" font-size="12" fill="#10b981" text-anchor="middle" font-weight="bold">
+      Status: Dormant
+    </text>
+    <text x="240" y="440" font-family="monospace" font-size="11" fill="#94a3b8" text-anchor="middle">
+      for(;;) pause()
+    </text>
+  </g>
+
+  <!-- Center: Kernel/PIDFD magic -->
+  <g filter="url(#shadowFilter)">
+    <!-- Kernel box -->
+    <rect x="450" y="220" width="300" height="200" rx="12" fill="#1the2e293b" stroke="url(#warnGrad)" stroke-width="2" opacity="0.9"/>
+    
+    <!-- Kernel header -->
+    <rect x="450" y="220" width="300" height="40" rx="12" fill="url(#warnGrad)" opacity="0.8"/>
+    <text x="600" y="248" font-family="monospace" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">
+      KERNEL
+    </text>
+    
+    <!-- PIDFD_GETFD operation -->
+    <text x="600" y="285" font-family="monospace" font-size="12" fill="#f59e0b" text-anchor="middle" font-weight="bold">
+      pidfd_open()
+    </text>
+    <text x="600" y="310" font-family="monospace" font-size="11" fill="#cbd5e1" text-anchor="middle">
+      ↓
+    </text>
+    <text x="600" y="330" font-family="monospace" font-size="12" fill="#f59e0b" text-anchor="middle" font-weight="bold">
+      pidfd_getfd() ×3
+    </text>
+    <text x="600" y="355" font-family="monospace" font-size="11" fill="#cbd5e1" text-anchor="middle">
+      (fd 0, 1, 2)
+    </text>
+    <text x="600" y="380" font-family="monospace" font-size="11" fill="#cbd5e1" text-anchor="middle">
+      ↓
+    </text>
+    <text x="600" y="400" font-family="monospace" font-size="12" fill="#10b981" text-anchor="middle" font-weight="bold">
+      receive_fd()
+    </text>
+  </g>
+
+  <!-- Arrows from exploit to kernel -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6" />
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <!-- Curved arrow: exploit → kernel (request) -->
+  <path d="M 400 260 Q 420 250 450 260" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowBlue)" stroke-dasharray="5,5" opacity="0.7"/>
+  <text x="415" y="245" font-family="monospace" font-size="10" fill="#3b82f6">
+    pidfd
+  </text>
+
+  <!-- Right side: Root Child -->
+  <g filter="url(#shadowFilter)">
+    <!-- Root child process box -->
+    <rect x="800" y="180" width="320" height="280" rx="12" fill="#1e293b" stroke="url(#successGrad)" stroke-width="2" opacity="0.9"/>
+    
+    <!-- Process header -->
+    <rect x="800" y="180" width="320" height="45" rx="12" fill="url(#successGrad)" opacity="0.8"/>
+    <text x="960" y="210" font-family="monospace" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">
+      Root Child
+    </text>
+    
+    <!-- PID/UID info -->
+    <text x="820" y="245" font-family="monospace" font-size="12" fill="#94a3b8" font-weight="bold">
+      PID: Fork from init
+    </text>
+    <text x="820" y="265" font-family="monospace" font-size="12" fill="#10b981" font-weight="bold">
+      UID: 0 (root)
+    </text>
+    
+    <!-- Stolen FDs -->
+    <text x="820" y="295" font-family="monospace" font-size="13" fill="#94a3b8" font-weight="bold">
+      Stolen FDs:
+    </text>
+    
+    <!-- fd 0, 1, 2 stolen versions -->
+    <g>
+      <circle cx="840" cy="330" r="18" fill="#10b981" opacity="0.8"/>
+      <text x="840" y="336" font-family="monospace" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="bold">
+        0
+      </text>
+      <text x="880" y="336" font-family="monospace" font-size="11" fill="#cbd5e1">
+        → /dev/pts/X
+      </text>
+    </g>
+    
+    <g>
+      <circle cx="840" cy="370" r="18" fill="#10b981" opacity="0.8"/>
+      <text x="840" y="376" font-family="monospace" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="bold">
+        1
+      </text>
+      <text x="880" y="376" font-family="monospace" font-size="11" fill="#cbd5e1">
+        → /dev/pts/X
+      </text>
+    </g>
+    
+    <!-- execve status -->
+    <rect x="820" y="410" width="280" height="50" rx="6" fill="#334155" opacity="0.6"/>
+    <text x="960" y="430" font-family="monospace" font-size="12" fill="#10b981" text-anchor="middle" font-weight="bold">
+      Status: Active
+    </text>
+    <text x="960" y="450" font-family="monospace" font-size="11" fill="#94a3b8" text-anchor="middle">
+      execve("/system/bin/sh")
+    </text>
+  </g>
+
+  <!-- Arrow: kernel → root child (response) -->
+  <path d="M 750 340 Q 770 330 800 340" stroke="url(#successGrad)" stroke-width="2" fill="none" marker-end="url(#arrowGreen)" stroke-dasharray="5,5" opacity="0.7"/>
+  <text x="755" y="315" font-family="monospace" font-size="10" fill="#10b981">
+    stolen fds
+  </text>
+
+  <!-- Bottom: Shared terminal -->
+  <g>
+    <rect x="300" y="510" width="600" height="95" rx="12" fill="#0f0f23" stroke="#06b6d4" stroke-width="2" opacity="0.9" filter="url(#shadowFilter)"/>
+    
+    <!-- Terminal header -->
+    <rect x="300" y="510" width="600" height="30" rx="12" fill="#06b6d4" opacity="0.2"/>
+    <circle cx="320" cy="525" r="4" fill="#ef4444" opacity="0.8"/>
+    <circle cx="340" cy="525" r="4" fill="#f59e0b" opacity="0.8"/>
+    <circle cx="360" cy="525" r="4" fill="#10b981" opacity="0.8"/>
+    
+    <!-- Terminal path -->
+    <text x="320" y="560" font-family="monospace" font-size="13" fill="#06b6d4" font-weight="bold">
+      /dev/pts/X
+    </text>
+    <text x="320" y="580" font-family="monospace" font-size="12" fill="#10b981">
+      # whoami
+    </text>
+    <text x="320" y="598" font-family="monospace" font-size="12" fill="#cbd5e1">
+      root
+    </text>
+    
+    <!-- Diagram arrows -->
+    <!-- Exploit → Terminal -->
+    <path d="M 240 460 L 340 510" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowBlue)" opacity="0.5"/>
+    
+    <!-- Root child → Terminal -->
+    <path d="M 960 460 L 860 510" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowGreen)" opacity="0.5"/>
+  </g>
+
+  <!-- Bottom text: Technique summary -->
+  <text x="600" y="625" font-family="monospace" font-size="13" fill="#cbd5e1" text-anchor="middle" font-weight="bold" letter-spacing="1">
+    Cross-Process FD Duplication → Root Shell via PTY Hijacking
+  </text>
+</svg>

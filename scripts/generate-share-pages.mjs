@@ -23,6 +23,11 @@ function renderPostPage(post) {
   const publishedDate = escapeHtml(String(post.date).trim())
   const postPath = `/blog/${slug}`
   const canonicalUrl = `${siteUrl}${postPath}`
+  
+  // Use post-specific OG image if available, otherwise default
+  const ogImage = post.ogImage 
+    ? escapeHtml(String(post.ogImage).trim())
+    : defaultImage
 
   return `<!doctype html>
 <html lang="en">
@@ -37,13 +42,13 @@ function renderPostPage(post) {
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
     <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:image" content="${defaultImage}" />
+    <meta property="og:image" content="${ogImage}" />
     <meta property="article:published_time" content="${publishedDate}" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${description}" />
-    <meta name="twitter:image" content="${defaultImage}" />
+    <meta name="twitter:image" content="${ogImage}" />
 
     <script>
       (function () {

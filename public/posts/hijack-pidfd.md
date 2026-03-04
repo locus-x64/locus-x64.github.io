@@ -246,51 +246,113 @@ Digging into the kernel source helps reason about edge cases. The implementation
 
 ### pidfd_open internals
 
+From `kernel/pid.c`:
+
 ```c
 SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
 {
-    // Validate flags
-    // Find struct pid for the given pid number
-    struct pid *p = find_get_pid(pid);
-    // Allocate a new file descriptor
-    // Create a pidfd file (backed by pidfd_fops)
-    // Install into the calling process's fd table
-    // Return the fd number
+	int fd;
+	struct pid *p;
+
+	if (flags & ~PIDFD_NONBLOCK)
+		return -EINVAL;
+
+	if (pid <= 0)
+		return -EINVAL;
+
+	p = find_get_pid(pid);
+	if (!p)
+		return -ESRCH;
+
+	fd = pidfd_create(p, flags);
+
+	put_pid(p);
+	return fd;
 }
 ```
 
-The pidfd is backed by an anonymous inode with `pidfd_fops`. It holds a reference to `struct pid`, which is a stable kernel object that outlives process exit (it persists until all references, including pidfds, are dropped).
+The implementation is straightforward: validate flags (only `PIDFD_NONBLOCK` is allowed), reject invalid PIDs, look up the `struct pid` via `find_get_pid()`, and delegate to `pidfd_create()` which allocates an anonymous inode backed by `pidfd_fops`. The `put_pid()` call drops the temporary reference — the pidfd itself holds its own reference to `struct pid`, which is a stable kernel object that outlives process exit (it persists until all references, including pidfds, are dropped).
 
 ### pidfd_getfd internals
 
+The actual implementation is split across a helper and the syscall wrapper. From `kernel/pid.c`:
+
 ```c
-SYSCALL_DEFINE3(pidfd_getfd, int, pidfd, int, fd, unsigned int, flags)
+static struct file *__pidfd_fget(struct task_struct *task, int fd)
 {
-    // 1. Look up the struct pid from the pidfd
-    struct pid *pid = pidfd_pid(pidfd_file);
+	struct file *file;
+	int ret;
 
-    // 2. Get the task_struct
-    struct task_struct *task = get_pid_task(pid, PIDTYPE_TGID);
+	ret = down_read_killable(&task->signal->exec_update_lock);
+	if (ret)
+		return ERR_PTR(ret);
 
-    // 3. Permission check — this is the critical gate
-    int ret = security_ptrace_access_check(task, PTRACE_MODE_ATTACH_REALCREDS);
-    if (ret) return ret;
+	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+		file = fget_task(task, fd);
+	else
+		file = ERR_PTR(-EPERM);
 
-    // 4. Look up the target's fd table
-    struct file *file = fget_task(task, fd);  // increments f_count
+	up_read(&task->signal->exec_update_lock);
 
-    // 5. Install into our fd table
-    int newfd = receive_fd(file, O_CLOEXEC);
+	return file ?: ERR_PTR(-EBADF);
+}
 
-    return newfd;
+static int pidfd_getfd(struct pid *pid, int fd)
+{
+	struct task_struct *task;
+	struct file *file;
+	int ret;
+
+	task = get_pid_task(pid, PIDTYPE_PID);
+	if (!task)
+		return -ESRCH;
+
+	file = __pidfd_fget(task, fd);
+	put_task_struct(task);
+	if (IS_ERR(file))
+		return PTR_ERR(file);
+
+	ret = receive_fd(file, O_CLOEXEC);
+	fput(file);
+
+	return ret;
+}
+```
+
+And the syscall entry point:
+
+```c
+SYSCALL_DEFINE3(pidfd_getfd, int, pidfd, int, fd,
+		unsigned int, flags)
+{
+	struct pid *pid;
+	struct fd f;
+	int ret;
+
+	/* flags is currently unused - make sure it's unset */
+	if (flags)
+		return -EINVAL;
+
+	f = fdget(pidfd);
+	if (!f.file)
+		return -EBADF;
+
+	pid = pidfd_pid(f.file);
+	if (IS_ERR(pid))
+		ret = PTR_ERR(pid);
+	else
+		ret = pidfd_getfd(pid, fd);
+
+	fdput(f);
+	return ret;
 }
 ```
 
 A few things worth noting here:
 
-`fget_task()` reads the target's `files_struct` under RCU protection and bumps the `struct file` reference count. Safe even if the target is concurrently closing fds.
+`__pidfd_fget()` acquires the target's `exec_update_lock` as a read lock (killable) before performing the `ptrace_may_access()` permission check — this is the critical gate requiring `PTRACE_MODE_ATTACH_REALCREDS`. Only if the check passes does it call `fget_task()`, which reads the target's `files_struct` under RCU protection and bumps the `struct file` reference count. Safe even if the target is concurrently closing fds.
 
-`receive_fd()` allocates a new fd in the caller's table and installs the `struct file`. The new fd always gets `O_CLOEXEC`.
+The internal `pidfd_getfd()` helper resolves the `struct pid` to a `task_struct` via `get_pid_task()`, calls `__pidfd_fget()` for the permission-checked fd fetch, then installs it via `receive_fd()` with `O_CLOEXEC`. The `fput()` after `receive_fd()` drops the extra reference — the installed fd holds its own.
 
 The refcount bump is important: it means the file (the PTY, in our case) stays open even if the target process closes its copy or exits. The exploit can die after the shell steals its fds, and the shell's fds remain valid.
 
@@ -549,20 +611,64 @@ The pidfd approach has specific permission requirements that must be satisfied:
 
 ### Capability check
 
-`pidfd_getfd` requires `PTRACE_MODE_ATTACH_REALCREDS`. The kernel function `__ptrace_may_access()` checks:
+`pidfd_getfd` requires `PTRACE_MODE_ATTACH_REALCREDS`. Here's the actual kernel function from `kernel/ptrace.c`:
 
 ```c
-// Simplified from kernel/ptrace.c
 static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
 {
-    // Check if same thread group → always allowed
-    // Check real UIDs/GIDs match
-    // Check CAP_SYS_PTRACE capability
-    // Call security_ptrace_access_check() → LSM hook
+	const struct cred *cred = current_cred(), *tcred;
+	struct mm_struct *mm;
+	kuid_t caller_uid;
+	kgid_t caller_gid;
+
+	if (!(mode & PTRACE_MODE_FSCREDS) == !(mode & PTRACE_MODE_REALCREDS)) {
+		WARN(1, "denying ptrace access check without PTRACE_MODE_*CREDS\n");
+		return -EPERM;
+	}
+
+	/* Don't let security modules deny introspection */
+	if (same_thread_group(task, current))
+		return 0;
+	rcu_read_lock();
+	if (mode & PTRACE_MODE_FSCREDS) {
+		caller_uid = cred->fsuid;
+		caller_gid = cred->fsgid;
+	} else {
+		caller_uid = cred->uid;
+		caller_gid = cred->gid;
+	}
+	tcred = __task_cred(task);
+	if (uid_eq(caller_uid, tcred->euid) &&
+	    uid_eq(caller_uid, tcred->suid) &&
+	    uid_eq(caller_uid, tcred->uid)  &&
+	    gid_eq(caller_gid, tcred->egid) &&
+	    gid_eq(caller_gid, tcred->sgid) &&
+	    gid_eq(caller_gid, tcred->gid))
+		goto ok;
+	if (ptrace_has_cap(tcred->user_ns, mode))
+		goto ok;
+	rcu_read_unlock();
+	return -EPERM;
+ok:
+	rcu_read_unlock();
+	smp_rmb();
+	mm = task->mm;
+	if (mm &&
+	    ((get_dumpable(mm) != SUID_DUMP_USER) &&
+	     !ptrace_has_cap(mm->user_ns, mode)))
+	    return -EPERM;
+
+	return security_ptrace_access_check(task, mode);
 }
 ```
 
-Our child runs as uid=0 (forked from init). Root has `CAP_SYS_PTRACE` implicitly. The UID check passes because root can ptrace any process.
+The function walks through three gates:
+
+1. **Same thread group** — `same_thread_group()` short-circuits to allow (introspection always permitted)
+2. **Credential check** — since pidfd_getfd uses `PTRACE_MODE_REALCREDS`, the caller's real `uid`/`gid` (not fsuid) are compared against the target's real, effective, and saved-set UIDs/GIDs. If they all match, we proceed. Otherwise, `ptrace_has_cap()` checks for `CAP_SYS_PTRACE` in the target's user namespace
+3. **Dumpability + LSM** — after a memory barrier (`smp_rmb()` pairs with `commit_creds()`), the target's mm dumpability is checked. Finally, `security_ptrace_access_check()` invokes the LSM hook (SELinux)
+
+Our child runs as uid=0 (forked from init). Root has `CAP_SYS_PTRACE` implicitly, so `ptrace_has_cap()` succeeds at the `goto ok` path. The dumpability check also passes (root with `CAP_SYS_PTRACE`). The only remaining gate is `security_ptrace_access_check()` — the SELinux LSM hook.
 
 ### SELinux check
 

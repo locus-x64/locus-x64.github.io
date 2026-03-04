@@ -6,7 +6,8 @@
     "excerpt": "A technique for stealing file descriptors across process boundaries using Linux pidfd syscalls for post-exploitation shells on Android.",
     "date": "2026-03-04",
     "readingTime": 30,
-    "tags": ["Exploit Development", "Technique"]
+    "tags": ["Exploit Development", "Technique"],
+    "ogImage": "https://locus-x64.github.io/images/posts/hijack-pidfd/og-image.svg"
   },
   {
     "id": "4",
