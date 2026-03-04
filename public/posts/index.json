@@ -1,0 +1,47 @@
+[
+  {
+    "id": "5",
+    "slug": "hijack-pidfd",
+    "title": " Process Hijacking via pidfd: Stealing File Descriptors for Post-Exploitation Shells",
+    "excerpt": "A technique for stealing file descriptors across process boundaries using Linux pidfd syscalls for post-exploitation shells on Android.",
+    "date": "2026-03-04",
+    "readingTime": 30,
+    "tags": ["Exploit Development", "Technique"]
+  },
+  {
+    "id": "4",
+    "slug": "cve-2025-61765",
+    "title": "CVE-2025-61765: RCE in Socket.IO via Pickle Deserialization",
+    "excerpt": "A Remote Code Execution vulnerability in python-socketio affecting multi-server deployments using message brokers. Caused by insecure deserialization where the library blindly unpickles data from shared message channels.",
+    "date": "2025-11-15",
+    "readingTime": 10,
+    "tags": ["Vulnerability Research", "Python", "Deserialization", "CVE"]
+  },
+  {
+    "id": "2",
+    "slug": "setup-elixir",
+    "title": "Elixir Cross Referencer: Indexing and Auditing Source Code",
+    "excerpt": "Explore source code in your browser - Particularly useful for the Linux kernel and other low-level projects in C/C++. A guide to setting up your own Elixir instance.",
+    "date": "2024-03-27",
+    "readingTime": 8,
+    "tags": ["Vulnerability Research", "Code Auditing", "Tools"]
+  },
+  {
+    "id": "3",
+    "slug": "cve-2024-22857",
+    "title": "CVE-2024-22857: Arbitrary Code Execution in zlog",
+    "excerpt": "Heap-based buffer overflow in zlog versions 1.1.0 to 1.2.17 in zlog_rule_new(). An attacker can exploit this vulnerability to overwrite the zlog_record_fn record_func function pointer to achieve arbitrary code execution.",
+    "date": "2024-03-09",
+    "readingTime": 12,
+    "tags": ["Vulnerability Research", "Exploitation", "CVE"]
+  },
+  {
+    "id": "1",
+    "slug": "linux-kernel-compilation",
+    "title": "Linux Kernel Compilation and Adding a Custom System Call",
+    "excerpt": "We can make changes to the Linux kernel and compile it to make a custom copy. Learn how to compile a kernel, add a custom system call, write a wrapper function, and create a man page.",
+    "date": "2022-04-13",
+    "readingTime": 15,
+    "tags": ["Linux Kernel", "System Calls", "Security Research"]
+  }
+]

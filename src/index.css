@@ -1,0 +1,290 @@
+@import 'tailwindcss';
+@import "tw-animate-css";
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+:root {
+  --background: oklch(0.04 0.01 240);
+  --foreground: oklch(0.92 0.005 240);
+  
+  --card: oklch(0.08 0.012 240);
+  --card-foreground: oklch(0.92 0.005 240);
+  
+  --popover: oklch(0.08 0.012 240);
+  --popover-foreground: oklch(0.92 0.005 240);
+  
+  --primary: oklch(0.65 0.19 145);
+  --primary-foreground: oklch(0.04 0.01 240);
+  
+  --secondary: oklch(0.12 0.015 240);
+  --secondary-foreground: oklch(0.92 0.005 240);
+  
+  --muted: oklch(0.10 0.012 240);
+  --muted-foreground: oklch(0.48 0.008 240);
+  
+  --accent: oklch(0.75 0.15 35);
+  --accent-foreground: oklch(0.04 0.01 240);
+  
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.005 240);
+  
+  --border: oklch(0.18 0.015 240);
+  --input: oklch(0.18 0.015 240);
+  --ring: oklch(0.65 0.19 145);
+  
+  --radius: 0.25rem;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--background);
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      oklch(0.65 0.19 145 / 0.02) 2px,
+      oklch(0.65 0.19 145 / 0.02) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      oklch(0.65 0.19 145 / 0.02) 2px,
+      oklch(0.65 0.19 145 / 0.02) 3px
+    ),
+    radial-gradient(ellipse at 20% 10%, oklch(0.65 0.19 145 / 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, oklch(0.75 0.15 35 / 0.06) 0%, transparent 50%);
+  background-attachment: fixed;
+  background-size: 50px 50px, 50px 50px, 100% 100%, 100% 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.025em;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+.gradient-border {
+  position: relative;
+  background: var(--card);
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, oklch(0.65 0.19 145), oklch(0.75 0.15 35));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+.code-block-wrapper {
+  position: relative;
+}
+
+.code-block {
+  background: oklch(0.06 0.012 240);
+  border: 1px solid oklch(0.15 0.015 240);
+  border-radius: 0.25rem;
+  padding: 1.5rem;
+  overflow-x: auto;
+  position: relative;
+  font-family: var(--font-mono);
+}
+
+.code-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(0.65 0.19 145 / 0.6), transparent);
+}
+
+.code-block code {
+  color: oklch(0.85 0.01 240);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-family: var(--font-mono);
+}
+
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: oklch(0.45 0.008 240);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: oklch(0.75 0.15 35);
+  font-weight: 500;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: oklch(0.78 0.16 60);
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: oklch(0.65 0.19 145);
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: oklch(0.70 0.18 180);
+  font-weight: 600;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: oklch(0.68 0.17 200);
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: oklch(0.65 0.19 145);
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: oklch(0.70 0.18 160);
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: oklch(0.72 0.16 330);
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: oklch(0.68 0.17 200);
+}
+
+.hljs-meta {
+  color: oklch(0.55 0.01 240);
+}
+
+.hljs-deletion {
+  color: oklch(0.55 0.22 25);
+  background: oklch(0.55 0.22 25 / 0.1);
+}
+
+.hljs-addition {
+  color: oklch(0.65 0.19 145);
+  background: oklch(0.65 0.19 145 / 0.1);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.prose {
+  max-width: 72ch;
+  line-height: 1.75;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, oklch(0.92 0.005 240), oklch(0.65 0.19 145));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.prose h3 {
+  font-size: 1.375rem;
+  font-weight: 500;
+  margin-top: 2rem;
+  margin-bottom: 0.875rem;
+  color: oklch(0.82 0.005 240);
+}
+
+.prose code {
+  background: oklch(0.10 0.012 240);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: oklch(0.65 0.19 145);
+  border: 1px solid oklch(0.18 0.015 240);
+  font-family: var(--font-mono);
+}
+
+.tag-glow {
+  box-shadow: 0 0 16px oklch(0.65 0.19 145 / 0.4);
+}
+
+.accent-glow {
+  box-shadow: 0 0 18px oklch(0.75 0.15 35 / 0.45);
+}
