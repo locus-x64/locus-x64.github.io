@@ -9,15 +9,13 @@ tags: ["Exploit Development", "Technique"]
 
 ## Cross-Process FD Theft as a Privilege Escalation Delivery Mechanism
 
-
 ## Introduction
 
 You've achieved arbitrary kernel read/write from userspace. You've bypassed SELinux. You can inject shellcode into any process on the system. Now what?
 
-The final mile of a privilege escalation exploit — actually getting an interactive root shell back to you — is harder than it sounds on modern Android. Direct credential modification is blocked by hypervisor protections (RKP, pKVM, and similar). So the usual approach is: inject code into a privileged process (typically `init`, PID 1), fork a child, and somehow connect that child back to your terminal. That "somehow" is where most exploit authors reach for Unix domain sockets, reverse TCP shells, or helper binaries.
+The final mile of a privilege escalation exploit, actually getting an interactive root shell, is harder than it sounds on modern Android. Direct credential modification is blocked by hypervisor protections (RKP, pKVM, and similar). So the usual approach is: inject code into a privileged process (typically `init`, PID 1), fork a child, and somehow connect that child back to your terminal. That "somehow" is where most exploit authors reach for Unix domain sockets, reverse TCP shells, or helper binaries.
 
 This post describes a cleaner technique: using Linux's `pidfd_open` and `pidfd_getfd` syscalls to **steal the exploit process's terminal file descriptors directly from shellcode**. No helper binaries, no network activity, full PTY semantics. One binary does everything.
-
 
 ## The Problem: Crossing the Process Boundary
 
@@ -45,7 +43,6 @@ sequenceDiagram
 The core problem: **you control code execution in a privileged process, but that process has no connection to your terminal**. Init's file descriptors point to `/dev/null` or `/dev/console`, not the pseudo-terminal (PTY) your ADB session is using.
 
 This is the "last mile" problem. KASLR bypass, kernel R/W primitives, SELinux defeat: none of it matters if you can't bridge this gap.
-
 
 ## Why Simple Approaches Fail
 
@@ -151,7 +148,6 @@ graph LR
     style E1 fill:#fa0,color:#fff
 ```
 
-
 ## Linux Process File Descriptors (pidfds)
 
 Linux 5.3 (2019) introduced the `pidfd_open` system call, authored by Christian Brauner. The motivation was process management: traditional PID-based APIs suffer from inherent TOCTOU (time-of-check-to-time-of-use) race conditions because PIDs are recycled. A process could exit and a new process could reuse its PID between a `kill()` check and a `kill()` call.
@@ -162,7 +158,7 @@ A **pidfd** (process file descriptor) is a file descriptor that refers to a spec
 #include <sys/syscall.h>
 #include <unistd.h>
 
-// No glibc wrapper — use syscall() directly
+// No glibc wrapper, use syscall() directly
 int pidfd = syscall(SYS_pidfd_open, target_pid, 0);
 // pidfd now refers to target_pid's struct pid
 // Can be polled, signaled, or used with pidfd_getfd
@@ -186,7 +182,6 @@ The returned file descriptor can be:
 - **Used with `waitid(P_PIDFD, ...)`**: race-free child reaping
 
 For exploitation, `pidfd_getfd` is the interesting one.
-
 
 ## pidfd_getfd: Cross-Process FD Duplication
 
@@ -233,12 +228,11 @@ flowchart LR
 
 `pidfd_getfd` performs a `PTRACE_MODE_ATTACH_REALCREDS` check. This is the same permission check that `ptrace(PTRACE_ATTACH)` uses. The kernel evaluates:
 
-1. **Same-user check** — is the caller's real UID equal to the target's real, effective, and saved-set UIDs? (same for GIDs)
-2. **Capability check** — does the caller have `CAP_SYS_PTRACE` in the target's user namespace?
-3. **LSM check** — does SELinux/Yama allow `process:ptrace`?
+1. **Same-user check**: is the caller's real UID equal to the target's real, effective, and saved-set UIDs? (same for GIDs)
+2. **Capability check**: does the caller have `CAP_SYS_PTRACE` in the target's user namespace?
+3. **LSM check**: does SELinux/Yama allow `process:ptrace`?
 
 The bottom line: **root can ptrace anyone**. If our shellcode runs as uid=0 (forked from init), it passes the capability check. The SELinux check is the only remaining gate, and if we've already disabled enforcement or zeroed policy mappings, that passes too.
-
 
 ## The Kernel Implementation
 
@@ -271,7 +265,7 @@ SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
 }
 ```
 
-The implementation is straightforward: validate flags (only `PIDFD_NONBLOCK` is allowed), reject invalid PIDs, look up the `struct pid` via `find_get_pid()`, and delegate to `pidfd_create()` which allocates an anonymous inode backed by `pidfd_fops`. The `put_pid()` call drops the temporary reference — the pidfd itself holds its own reference to `struct pid`, which is a stable kernel object that outlives process exit (it persists until all references, including pidfds, are dropped).
+The implementation is straightforward: validate flags (only `PIDFD_NONBLOCK` is allowed), reject invalid PIDs, look up the `struct pid` via `find_get_pid()`, and delegate to `pidfd_create()` which allocates an anonymous inode backed by `pidfd_fops`. The `put_pid()` call drops the temporary reference, the pidfd itself holds its own reference to `struct pid`, which is a stable kernel object that outlives process exit (it persists until all references, including pidfds, are dropped).
 
 ### pidfd_getfd internals
 
@@ -350,9 +344,9 @@ SYSCALL_DEFINE3(pidfd_getfd, int, pidfd, int, fd,
 
 A few things worth noting here:
 
-`__pidfd_fget()` acquires the target's `exec_update_lock` as a read lock (killable) before performing the `ptrace_may_access()` permission check — this is the critical gate requiring `PTRACE_MODE_ATTACH_REALCREDS`. Only if the check passes does it call `fget_task()`, which reads the target's `files_struct` under RCU protection and bumps the `struct file` reference count. Safe even if the target is concurrently closing fds.
+`__pidfd_fget()` acquires the target's `exec_update_lock` as a read lock (killable) before performing the `ptrace_may_access()` permission check, this is the critical gate requiring `PTRACE_MODE_ATTACH_REALCREDS`. Only if the check passes does it call `fget_task()`, which reads the target's `files_struct` under RCU protection and bumps the `struct file` reference count. Safe even if the target is concurrently closing fds.
 
-The internal `pidfd_getfd()` helper resolves the `struct pid` to a `task_struct` via `get_pid_task()`, calls `__pidfd_fget()` for the permission-checked fd fetch, then installs it via `receive_fd()` with `O_CLOEXEC`. The `fput()` after `receive_fd()` drops the extra reference — the installed fd holds its own.
+The internal `pidfd_getfd()` helper resolves the `struct pid` to a `task_struct` via `get_pid_task()`, calls `__pidfd_fget()` for the permission-checked fd fetch, then installs it via `receive_fd()` with `O_CLOEXEC`. The `fput()` after `receive_fd()` drops the extra reference (the installed fd holds its own).
 
 The refcount bump is important: it means the file (the PTY, in our case) stays open even if the target process closes its copy or exits. The exploit can die after the shell steals its fds, and the shell's fds remain valid.
 
@@ -382,12 +376,11 @@ sequenceDiagram
     Note over C: Root shell with real terminal!
 ```
 
-
 ## Applying pidfd to Exploit Shellcode
 
 The technique for post-exploitation is:
 
-The exploit process (unprivileged, holding a PTY from adb) patches its own PID into the shellcode data before injecting it into the page cache. When the shellcode fires inside init, it forks a child. That child (running as uid=0) calls `pidfd_open(exploit_pid)` to get a handle to the exploit process, then `pidfd_getfd` three times to duplicate fds 0, 1, and 2 — all pointing to the PTY. It installs them via `dup3()` and calls `execve("/system/bin/sh")`. Meanwhile, the exploit process goes dormant. The shell now owns the real PTY and drives the terminal.
+The exploit process (unprivileged, holding a PTY from adb) patches its own PID into the shellcode data before injecting it into the page cache. When the shellcode fires inside init, it forks a child. That child (running as uid=0) calls `pidfd_open(exploit_pid)` to get a handle to the exploit process, then `pidfd_getfd` three times to duplicate fds 0, 1, and 2; all pointing to the PTY. It installs them via `dup3()` and calls `execve("/system/bin/sh")`. Meanwhile, the exploit process goes dormant. The shell now owns the real PTY and drives the terminal.
 
 ```mermaid
 flowchart TB
@@ -411,7 +404,6 @@ flowchart TB
         C2 -->|"reads/writes"| PTY2
     end
 ```
-
 
 ## The Concurrency Problem: Atomic Guard Files
 
@@ -495,7 +487,6 @@ Or from the kernel headers:
 #define O_EXCL      00000200  // octal → 0x80
 ```
 
-
 ## Shellcode Architecture
 
 The complete shellcode for the pidfd approach fits in 356 bytes (76 ARM64 instructions + 52 bytes of data). Here's the logical structure:
@@ -566,7 +557,6 @@ ldr  w0, [x9]           // load the 32-bit PID value
 
 **5. The back-branch.** After the epilogue restores registers and executes the replaced instruction (`mov x1, x0`), the shellcode branches back to the original code at the instruction after the trampoline. This branch is a PC-relative `B` instruction with a negative offset. The encoding is computed at shellcode design time based on the known page layout.
 
-
 ## The Dormant Exploit Pattern
 
 After shellcode injection and triggering, the exploit process has to stay alive but do nothing.
@@ -578,7 +568,7 @@ for (;;) pause();
 
 Why? Three reasons.
 
-**FD lifetime.** The shell's file descriptors are kernel-level duplicates of the exploit's fds — same `struct file` underneath. The refcount keeps the PTY alive even if the exploit closes its copies, but staying dormant is simpler.
+**FD lifetime.** The shell's file descriptors are kernel-level duplicates of the exploit's fds -> same `struct file` underneath. The refcount keeps the PTY alive even if the exploit closes its copies, but staying dormant is simpler.
 
 **Terminal ownership.** If the exploit kept running and tried to read stdin, it would race with the shell for input. `pause()` blocks until a signal arrives, yielding the terminal entirely.
 
@@ -603,7 +593,6 @@ stateDiagram-v2
 ```
 
 This "dormant parent" pattern is the pidfd equivalent of a `wait()` call, but without parent-child relationship semantics (the shell is init's grandchild, not the exploit's child).
-
 
 ## Permission Model and SELinux Interaction
 
@@ -664,11 +653,11 @@ ok:
 
 The function walks through three gates:
 
-1. **Same thread group** — `same_thread_group()` short-circuits to allow (introspection always permitted)
-2. **Credential check** — since pidfd_getfd uses `PTRACE_MODE_REALCREDS`, the caller's real `uid`/`gid` (not fsuid) are compared against the target's real, effective, and saved-set UIDs/GIDs. If they all match, we proceed. Otherwise, `ptrace_has_cap()` checks for `CAP_SYS_PTRACE` in the target's user namespace
-3. **Dumpability + LSM** — after a memory barrier (`smp_rmb()` pairs with `commit_creds()`), the target's mm dumpability is checked. Finally, `security_ptrace_access_check()` invokes the LSM hook (SELinux)
+1. **Same thread group**: `same_thread_group()` short-circuits to allow (introspection always permitted)
+2. **Credential check**: since pidfd_getfd uses `PTRACE_MODE_REALCREDS`, the caller's real `uid`/`gid` (not fsuid) are compared against the target's real, effective, and saved-set UIDs/GIDs. If they all match, we proceed. Otherwise, `ptrace_has_cap()` checks for `CAP_SYS_PTRACE` in the target's user namespace
+3. **Dumpability + LSM**: after a memory barrier (`smp_rmb()` pairs with `commit_creds()`), the target's mm dumpability is checked. Finally, `security_ptrace_access_check()` invokes the LSM hook (SELinux)
 
-Our child runs as uid=0 (forked from init). Root has `CAP_SYS_PTRACE` implicitly, so `ptrace_has_cap()` succeeds at the `goto ok` path. The dumpability check also passes (root with `CAP_SYS_PTRACE`). The only remaining gate is `security_ptrace_access_check()` — the SELinux LSM hook.
+Our child runs as uid=0 (forked from init). Root has `CAP_SYS_PTRACE` implicitly, so `ptrace_has_cap()` succeeds at the `goto ok` path. The dumpability check also passes (root with `CAP_SYS_PTRACE`). The only remaining gate is `security_ptrace_access_check()` -> the SELinux LSM hook.
 
 ### SELinux check
 
@@ -712,7 +701,6 @@ flowchart TD
     style DENY fill:#f55,color:#fff
 ```
 
-
 ## Comparison with Alternative Approaches
 
 | Criterion | Unix socket + helper | TCP reverse shell | PTY alloc in shellcode | pidfd_getfd |
@@ -742,7 +730,6 @@ The main limitation is the kernel version requirement (5.6+). Android 12+ device
 | Android 15 | 6.1 / 6.6 | ✅ | ✅ |
 
 For Android 12+ devices, pidfd_getfd is a safe choice.
-
 
 ## Limitations and Caveats
 
@@ -788,11 +775,9 @@ If two exploit instances run simultaneously, they'd race for the guard file (onl
 
 The shellcode encodings (branch offsets, instruction sequences, syscall numbers) are aarch64-specific. Porting to x86_64 or arm32 means re-encoding everything and double-checking syscall numbers. The technique itself works on any architecture.
 
-
 ## Conclusion
 
-`pidfd_open` + `pidfd_getfd` turns out to be a near-perfect fit for page-cache injection exploits on Android. No helper binary, no sockets, no network activity — just steal the exploit's terminal fds and exec a shell. Root running in init can grab any process's file descriptors thanks to ptrace permission asymmetry, and the result is a real PTY session with job control, tab completion, the works. If you're targeting Android 12+ (kernel 5.10+), this is probably what you want.
-
+`pidfd_open` + `pidfd_getfd` turns out to be a near-perfect fit for page-cache injection exploits on Android. No helper binary, no sockets, no network activity, just steal the exploit's terminal fds and exec a shell. Root running in init can grab any process's file descriptors thanks to ptrace permission asymmetry, and the result is a real PTY session with job control, tab completion, the works. If you're targeting Android 12+ (kernel 5.10+), this is probably what you want.
 
 ## References
 
