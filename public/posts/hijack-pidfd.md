@@ -11,9 +11,9 @@ tags: ["Exploit Development", "Technique"]
 
 ## Introduction
 
-You've achieved arbitrary kernel read/write from userspace. You've bypassed SELinux. You can inject shellcode into any process on the system. Now what?
+We have achieved arbitrary kernel read/write from userspace. We have bypassed SELinux. We can inject shellcode into any process on the system. Now what?
 
-The final mile of a privilege escalation exploit, actually getting an interactive root shell, is harder than it sounds on modern Android. Direct credential modification is blocked by hypervisor protections (RKP, pKVM, and similar). So the usual approach is: inject code into a privileged process (typically `init`, PID 1), fork a child, and somehow connect that child back to your terminal. That "somehow" is where most exploit authors reach for Unix domain sockets, reverse TCP shells, or helper binaries.
+The final mile of a privilege escalation exploit, actually getting an interactive root shell, is harder than it sounds on modern Android. Direct credential modification is blocked by hypervisor protections (RKP, pKVM, and similar). So the usual approach is: inject code into a privileged process (typically `init`, PID 1), fork a child, and somehow connect that child back to our terminal. That "somehow" is where most exploit authors reach for Unix domain sockets, reverse TCP shells, or helper binaries.
 
 This post describes a cleaner technique: using Linux's `pidfd_open` and `pidfd_getfd` syscalls to **steal the exploit process's terminal file descriptors directly from shellcode**. No helper binaries, no network activity, full PTY semantics. One binary does everything.
 
@@ -40,9 +40,9 @@ sequenceDiagram
     I--xE: ❓ How to bridge the gap?
 ```
 
-The core problem: **you control code execution in a privileged process, but that process has no connection to your terminal**. Init's file descriptors point to `/dev/null` or `/dev/console`, not the pseudo-terminal (PTY) your ADB session is using.
+The core problem: **we control code execution in a privileged process, but that process has no connection to our terminal**. Init's file descriptors point to `/dev/null` or `/dev/console`, not the pseudo-terminal (PTY) our ADB session is using.
 
-This is the "last mile" problem. KASLR bypass, kernel R/W primitives, SELinux defeat: none of it matters if you can't bridge this gap.
+This is the "last mile" problem. KASLR bypass, kernel R/W primitives, SELinux defeat: none of it matters if we can't bridge this gap.
 
 ## Why Simple Approaches Fail
 
@@ -94,9 +94,9 @@ int master = open("/dev/ptmx", O_RDWR);
 ```
 
 Problems:
-- `grantpt()`, `unlockpt()`, `ptsname()` are libc functions, not syscalls. In raw shellcode, you'd have to replicate their underlying ioctls (`TIOCGPTN`, `TIOCSPTLCK`, `TIOCGPTPEER`).
-- Even if you manage to allocate a PTY, the exploit process doesn't know which `/dev/pts/N` was created. You'd need an IPC channel to communicate this, which circles back to the socket problem.
-- The shellcode size gets out of hand fast for constrained injection contexts (you often have a few hundred bytes to work with in page-cache injection).
+- `grantpt()`, `unlockpt()`, `ptsname()` are libc functions, not syscalls. In raw shellcode, we would have to replicate their underlying ioctls (`TIOCGPTN`, `TIOCSPTLCK`, `TIOCGPTPEER`).
+- Even if we manage to allocate a PTY, the exploit process doesn't know which `/dev/pts/N` was created. We would need an IPC channel to communicate this, which circles back to the socket problem.
+- The shellcode size gets out of hand fast for constrained injection contexts (we often have a few hundred bytes to work with in page-cache injection).
 
 ### "Reverse shell over TCP"
 
@@ -199,7 +199,7 @@ int pidfd_getfd(int pidfd, int targetfd, unsigned int flags);
 
 The returned file descriptor is a **kernel-level duplicate**: it references the same underlying `struct file` as the target's fd. So:
 
-- If the target has fd 0 pointing to `/dev/pts/3`, you get a new fd also pointing to `/dev/pts/3`
+- If the target has fd 0 pointing to `/dev/pts/3`, we get a new fd also pointing to `/dev/pts/3`
 - Both processes can independently read/write through their respective fds
 - The `struct file` reference count is incremented, so the file stays open even if the target closes its copy
 - The new fd is created with `O_CLOEXEC` set
@@ -409,7 +409,7 @@ flowchart TB
 
 There's a subtlety when injecting shellcode into a multi-threaded process like `init`. Android's init runs multiple threads, and the hijacked function (`__system_property_find` in the libc page-cache injection scenario) is called frequently by many threads simultaneously.
 
-If two threads hit the shellcode at the same time, both would try to fork children. You'd get duplicate root shells racing for the terminal, zombie processes, and potentially init instability.
+If two threads hit the shellcode at the same time, both would try to fork children. We would get duplicate root shells racing for the terminal, zombie processes, and potentially init instability.
 
 ### The TOCTOU trap
 
@@ -663,13 +663,13 @@ Our child runs as uid=0 (forked from init). Root has `CAP_SYS_PTRACE` implicitly
 
 The LSM hook `security_ptrace_access_check()` calls into SELinux's `selinux_ptrace_access_check()`, which checks the `process:ptrace` access vector. This is where exploitation becomes architecture-dependent:
 
-**If you disabled SELinux by flipping `enforcing` to 0:**
+**If we disabled SELinux by flipping `enforcing` to 0:**
 The check calls `avc_has_perm()`, which internally calls `enforcing_enabled()`. In permissive mode, a denial is logged but not enforced, so the syscall succeeds.
 
-**If you zeroed the security class mappings:**
+**If we zeroed the security class mappings:**
 The `process` security class maps to an internal class ID. With all mapping values zeroed, the permission lookup finds no defined permissions for the `process` class. The `allow_unknown` flag (if set) causes undefined permissions to be allowed.
 
-**If you did both** (which is what we do, just to be safe):
+**If we did both** (which is what we do, just to be safe):
 The pidfd_getfd succeeds regardless of which SELinux bypass technique is effective on the specific device.
 
 ### Yama LSM
@@ -717,7 +717,7 @@ flowchart TD
 | Detection surface | Socket in /data/ | Listening port | /dev/ptmx access | **Guard file in /data/** |
 | Minimum kernel | Any | Any | Any | **5.6+** |
 
-The main limitation is the kernel version requirement (5.6+). Android 12+ devices all ship with kernel 5.10+ (GKI mandate), so it's available on all of them. For older devices running kernel 4.x, you'd need a different approach.
+The main limitation is the kernel version requirement (5.6+). Android 12+ devices all ship with kernel 5.10+ (GKI mandate), so it's available on all of them. For older devices running kernel 4.x, we would need a different approach.
 
 ### Kernel version availability
 
@@ -750,7 +750,7 @@ $ rm /data/local/tmp/.pidfd_guard
 rm: /data/local/tmp/.pidfd_guard: Operation not permitted
 
 # Solutions:
-$ su -c rm /data/local/tmp/.pidfd_guard  # if you still have root
+$ su -c rm /data/local/tmp/.pidfd_guard  # if we still have root
 # OR
 $ reboot                                  # device reboot clears tmpfs
 ```
@@ -777,7 +777,7 @@ The shellcode encodings (branch offsets, instruction sequences, syscall numbers)
 
 ## Conclusion
 
-`pidfd_open` + `pidfd_getfd` turns out to be a near-perfect fit for page-cache injection exploits on Android. No helper binary, no sockets, no network activity, just steal the exploit's terminal fds and exec a shell. Root running in init can grab any process's file descriptors thanks to ptrace permission asymmetry, and the result is a real PTY session with job control, tab completion, the works. If you're targeting Android 12+ (kernel 5.10+), this is probably what you want.
+`pidfd_open` + `pidfd_getfd` turns out to be a near-perfect fit for page-cache injection exploits on Android. No helper binary, no sockets, no network activity, just steal the exploit's terminal fds and exec a shell. Root running in init can grab any process's file descriptors thanks to ptrace permission asymmetry, and the result is a real PTY session with job control, tab completion, the works. If we're targeting Android 12+ (kernel 5.10+), this is probably what we want.
 
 ## References
 
