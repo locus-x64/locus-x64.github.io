@@ -5,6 +5,9 @@ on:
     branches:
       - master
   workflow_dispatch:
+  schedule:
+    # Daily refresh of the contributions feed.
+    - cron: '0 6 * * *'
 
 permissions:
   contents: read
@@ -33,6 +36,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: locus-x64
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

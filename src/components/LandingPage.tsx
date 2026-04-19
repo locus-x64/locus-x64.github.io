@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { GithubLogo, TwitterLogo, LinkedinLogo, ArrowRight, Code, ShieldCheck, Bug } from '@phosphor-icons/react'
 import { Logo } from '@/components/Logo'
 import { Link } from 'react-router-dom'
+import { RecentContributions } from '@/components/RecentContributions'
 
 interface LandingPageProps {
   author: Author
@@ -95,6 +96,8 @@ export function LandingPage({ author }: LandingPageProps) {
             </Button>
           </div>
         </div>
+
+        <RecentContributions />
       </div>
     </div>
   )

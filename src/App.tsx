@@ -4,6 +4,7 @@ import { LandingPage } from '@/components/LandingPage'
 import { Header } from '@/components/Header'
 import { BlogListing } from '@/components/BlogListing'
 import { PostDetail } from '@/components/PostDetail'
+import { ContributionFeed } from '@/components/ContributionFeed'
 import { author } from '@/lib/blogData'
 import { loadAllPosts } from '@/lib/postLoader'
 import { BlogPost } from '@/types/blog'
@@ -47,6 +48,15 @@ function App() {
             <>
               <Header author={author} />
               <PostDetail />
+            </>
+          }
+        />
+        <Route
+          path="/contributions"
+          element={
+            <>
+              <Header author={author} />
+              <ContributionFeed />
             </>
           }
         />

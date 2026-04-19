@@ -7,7 +7,8 @@
         "dev": "vite",
         "kill": "fuser -k 5000/tcp",
         "generate:share-pages": "node scripts/generate-share-pages.mjs",
-        "build": "npm run generate:share-pages && tsc -b --noCheck && vite build",
+        "fetch:contributions": "node scripts/fetch-contributions.mjs",
+        "build": "npm run fetch:contributions && npm run generate:share-pages && tsc -b --noCheck && vite build",
         "lint": "eslint .",
         "optimize": "vite optimize",
         "preview": "vite preview"

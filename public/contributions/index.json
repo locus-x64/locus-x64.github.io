@@ -1,0 +1,181 @@
+{
+  "generatedAt": "2026-04-19T10:32:00.247Z",
+  "username": "locus-x64",
+  "items": [
+    {
+      "id": "ghsa:GHSA-f78v-p5hx-m7hh",
+      "type": "advisory",
+      "title": "Local Privilege Escalation (LPE) via TOCTOU race condition in cap_set_file() through file capability injection",
+      "summary": "A TOCTOU race condition in libcap's cap_set_file() allows an unprivileged local attacker with write access to the parent directory to redirect file capability writes to an arbitrary file via renameat2(RENAME_EXCHANGE), leading to local privilege escalation.",
+      "repo": "AndrewGMorgan/libcap_mirror",
+      "url": "https://github.com/AndrewGMorgan/libcap_mirror/security/advisories/GHSA-f78v-p5hx-m7hh",
+      "date": "2026-04-05",
+      "cveId": "CVE-2026-4878",
+      "ghsaId": "GHSA-f78v-p5hx-m7hh",
+      "severity": "medium",
+      "cvss": 6.7,
+      "state": "published",
+      "tags": [
+        "Advisory",
+        "CVE",
+        "Medium",
+        "TOCTOU",
+        "Linux",
+        "libcap"
+      ]
+    },
+    {
+      "id": "pr:libuv/libuv#5050",
+      "type": "patch",
+      "title": "win/tty: fix off-by-one NUL write in UTF-16 to WTF-8 conversion",
+      "summary": "The TTY line-read path on Windows passes `bytes` as the target length to `uv_utf16_to_wtf8()`, but the API contract states that `target_len_ptr` excludes space for the NUL terminator. When the input consists entirely of 3-byte UTF-8 charac…",
+      "repo": "libuv/libuv",
+      "url": "https://github.com/libuv/libuv/pull/5050",
+      "date": "2026-03-13T10:59:12Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "libuv"
+      ]
+    },
+    {
+      "id": "ghsa:GHSA-xwjm-j929-xq7c",
+      "type": "advisory",
+      "title": "OpenClaw has a Path Traversal in Browser Download Functionality",
+      "summary": "### Summary OpenClaw browser download helpers accepted an unsanitized output path. When invoked via the browser control gateway routes, this allowed path traversal to write downloads outside the intended OpenClaw temp downloads directory.…",
+      "repo": "openclaw/openclaw",
+      "url": "https://github.com/advisories/GHSA-xwjm-j929-xq7c",
+      "date": "2026-02-18T17:37:52Z",
+      "cveId": "CVE-2026-26972",
+      "ghsaId": "GHSA-xwjm-j929-xq7c",
+      "severity": "medium",
+      "cvss": 6.7,
+      "state": "published",
+      "tags": [
+        "Advisory",
+        "CVE",
+        "Medium",
+        "openclaw"
+      ]
+    },
+    {
+      "id": "ghsa:GHSA-qqhf-pm3j-96g7",
+      "type": "advisory",
+      "title": "MindsDB has improper sanitation of filepath that leads to information disclosure and DOS",
+      "summary": "### Summary [BlueRock](https://bluerock.io/) discovered an unauthenticated path traversal in the file upload API lets any caller read arbitrary files from the server filesystem and move them into MindsDB’s storage, exposing sensitive data.…",
+      "repo": "mindsdb/mindsdb",
+      "url": "https://github.com/advisories/GHSA-qqhf-pm3j-96g7",
+      "date": "2026-01-12T16:10:55Z",
+      "cveId": "CVE-2025-68472",
+      "ghsaId": "GHSA-qqhf-pm3j-96g7",
+      "severity": "high",
+      "cvss": 8.1,
+      "state": "published",
+      "tags": [
+        "Advisory",
+        "CVE",
+        "High",
+        "mindsdb"
+      ]
+    },
+    {
+      "id": "pr:papadoxie/scanipy#11",
+      "type": "patch",
+      "title": "Add CVE found using Scanipy",
+      "summary": "Added a section of Vulnerabilities/CVEs found using Scanipy. - One CVE added in the section",
+      "repo": "papadoxie/scanipy",
+      "url": "https://github.com/papadoxie/scanipy/pull/11",
+      "date": "2025-12-31T08:11:35Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "papadoxie"
+      ]
+    },
+    {
+      "id": "pr:papadoxie/scanipy#9",
+      "type": "patch",
+      "title": "Update publish-wiki.yml workflow configuration",
+      "summary": "Updated the publish-wiki workflow to use version 0.3.0 of the actions-wiki and changed the path from 'wiki' to 'docs'.",
+      "repo": "papadoxie/scanipy",
+      "url": "https://github.com/papadoxie/scanipy/pull/9",
+      "date": "2025-12-31T07:26:31Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "papadoxie"
+      ]
+    },
+    {
+      "id": "pr:papadoxie/scanipy#2",
+      "type": "patch",
+      "title": "Add integration with semgrep",
+      "summary": "There are two features in this commit: 1. Searching code pattern with along with some extra keyword. 2. Running custom `semgrep` rules provided in the **semgrep** folder",
+      "repo": "papadoxie/scanipy",
+      "url": "https://github.com/papadoxie/scanipy/pull/2",
+      "date": "2025-11-15T18:13:45Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "papadoxie"
+      ]
+    },
+    {
+      "id": "ghsa:GHSA-g8c6-8fjj-2r4m",
+      "type": "advisory",
+      "title": "python-socketio vulnerable to arbitrary Python code execution (RCE) through malicious pickle deserialization in certain multi-server deployments",
+      "summary": "### Summary A remote code execution vulnerability in python-socketio versions prior to 5.14.0 allows attackers to execute arbitrary Python code through malicious pickle deserialization in multi-server deployments on which the attacker prev…",
+      "repo": "miguelgrinberg/python-socketio",
+      "url": "https://github.com/advisories/GHSA-g8c6-8fjj-2r4m",
+      "date": "2025-10-07T12:55:22Z",
+      "cveId": "CVE-2025-61765",
+      "ghsaId": "GHSA-g8c6-8fjj-2r4m",
+      "severity": "medium",
+      "cvss": 6.4,
+      "state": "published",
+      "tags": [
+        "Advisory",
+        "CVE",
+        "Medium",
+        "miguelgrinberg"
+      ],
+      "relatedPostSlug": "cve-2025-61765"
+    },
+    {
+      "id": "pr:papadoxie/scanipy#1",
+      "type": "patch",
+      "title": "Fix some issues with rate limit and search by extension",
+      "summary": "",
+      "repo": "papadoxie/scanipy",
+      "url": "https://github.com/papadoxie/scanipy/pull/1",
+      "date": "2025-07-29T09:18:10Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "papadoxie"
+      ]
+    },
+    {
+      "id": "cve:CVE-2024-22857",
+      "type": "advisory",
+      "title": "CVE-2024-22857: Arbitrary Code Execution in zlog via heap-based buffer overflow",
+      "summary": "Heap-based buffer overflow in zlog 1.1.0–1.2.17 in zlog_rule_new(). A missing length check when copying record_name from file_path + 1 lets an attacker overwrite the zlog_record_fn record_func function pointer, achieving arbitrary code execution. CVE assigned by MITRE; not in the global GitHub Advisory DB.",
+      "repo": "HardySimpson/zlog",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22857",
+      "date": "2024-02-29",
+      "cveId": "CVE-2024-22857",
+      "severity": "high",
+      "cvss": 7.8,
+      "state": "published",
+      "tags": [
+        "Advisory",
+        "CVE",
+        "High",
+        "Heap Overflow",
+        "C",
+        "zlog"
+      ],
+      "relatedPostSlug": "cve-2024-22857"
+    }
+  ]
+}

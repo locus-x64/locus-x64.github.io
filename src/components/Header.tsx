@@ -2,7 +2,7 @@ import { Author } from '@/types/blog'
 import { Button } from '@/components/ui/button'
 import { GithubLogo, TwitterLogo, LinkedinLogo } from '@phosphor-icons/react'
 import { Logo } from '@/components/Logo'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 interface HeaderProps {
   author: Author
@@ -33,6 +33,33 @@ export function Header({ author }: HeaderProps) {
               <p className="text-xs text-muted-foreground font-mono">{author.handle}</p>
             </div>
           </Link>
+
+          <nav className="hidden md:flex items-center gap-1 mr-2">
+            <NavLink
+              to="/blog"
+              className={({ isActive }) =>
+                `px-3 py-1.5 text-xs font-mono uppercase tracking-widest rounded-md transition-all duration-200 ${
+                  isActive
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                }`
+              }
+            >
+              Research
+            </NavLink>
+            <NavLink
+              to="/contributions"
+              className={({ isActive }) =>
+                `px-3 py-1.5 text-xs font-mono uppercase tracking-widest rounded-md transition-all duration-200 ${
+                  isActive
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                }`
+              }
+            >
+              Contributions
+            </NavLink>
+          </nav>
 
           <div className="flex items-center gap-1">
             <Button

@@ -1,0 +1,35 @@
+{
+  "_comment": "Manual contributions not discoverable via the public GitHub APIs (e.g. repo-only advisories not yet in the global Advisory DB). Auto-merged with API results by scripts/fetch-contributions.mjs.",
+  "items": [
+    {
+      "id": "ghsa:GHSA-f78v-p5hx-m7hh",
+      "type": "advisory",
+      "title": "Local Privilege Escalation (LPE) via TOCTOU race condition in cap_set_file() through file capability injection",
+      "summary": "A TOCTOU race condition in libcap's cap_set_file() allows an unprivileged local attacker with write access to the parent directory to redirect file capability writes to an arbitrary file via renameat2(RENAME_EXCHANGE), leading to local privilege escalation.",
+      "repo": "AndrewGMorgan/libcap_mirror",
+      "url": "https://github.com/AndrewGMorgan/libcap_mirror/security/advisories/GHSA-f78v-p5hx-m7hh",
+      "date": "2026-04-05",
+      "cveId": "CVE-2026-4878",
+      "ghsaId": "GHSA-f78v-p5hx-m7hh",
+      "severity": "medium",
+      "cvss": 6.7,
+      "state": "published",
+      "tags": ["Advisory", "CVE", "Medium", "TOCTOU", "Linux", "libcap"]
+    },
+    {
+      "id": "cve:CVE-2024-22857",
+      "type": "advisory",
+      "title": "CVE-2024-22857: Arbitrary Code Execution in zlog via heap-based buffer overflow",
+      "summary": "Heap-based buffer overflow in zlog 1.1.0–1.2.17 in zlog_rule_new(). A missing length check when copying record_name from file_path + 1 lets an attacker overwrite the zlog_record_fn record_func function pointer, achieving arbitrary code execution. CVE assigned by MITRE; not in the global GitHub Advisory DB.",
+      "repo": "HardySimpson/zlog",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-22857",
+      "date": "2024-02-29",
+      "cveId": "CVE-2024-22857",
+      "severity": "high",
+      "cvss": 7.8,
+      "state": "published",
+      "tags": ["Advisory", "CVE", "High", "Heap Overflow", "C", "zlog"],
+      "relatedPostSlug": "cve-2024-22857"
+    }
+  ]
+}
