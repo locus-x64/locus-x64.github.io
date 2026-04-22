@@ -17,6 +17,31 @@
       "tags": ["Advisory", "CVE", "Medium", "TOCTOU", "Linux", "libcap"]
     },
     {
+      "id": "h1:3557138",
+      "type": "advisory",
+      "title": "Arbitrary Code Execution via Scanner Bypass in aws-diagram-mcp-server exec() Namespace",
+      "summary": "HackerOne report #3557138 documents code execution in aws-diagram-mcp-server where untrusted input reaches exec(code, namespace). String-based scanner checks are bypassed via reflective calls, enabling command execution, file access, and environment variable exposure in affected workflows.",
+      "repo": "awslabs/mcp",
+      "url": "https://hackerone.com/reports/3557138",
+      "date": "2026-03-09",
+      "state": "published",
+      "severity": "unknown",
+      "tags": ["Advisory", "HackerOne", "MCP", "RCE", "AWS"]
+    },
+    {
+      "id": "huntr:8ea869d5-f73d-4082-b582-26eb6abcf29d",
+      "type": "advisory",
+      "title": "Arbitrary File Deletion via Path Traversal in LiteLLM Proxy",
+      "summary": "Huntr report documents path traversal in LiteLLM proxy dotprompt conversion where user-controlled file.filename is joined into a filesystem path and later unlinked in cleanup. A crafted traversal filename can target writable .prompt files outside the temp directory for overwrite and deletion.",
+      "repo": "berriai/litellm",
+      "url": "https://huntr.com/bounties/8ea869d5-f73d-4082-b582-26eb6abcf29d",
+      "date": "2026-02-09",
+      "state": "published",
+      "severity": "high",
+      "cvss": 8.1,
+      "tags": ["Advisory", "Huntr", "High", "Path Traversal", "LiteLLM"]
+    },
+    {
       "id": "cve:CVE-2024-22857",
       "type": "advisory",
       "title": "CVE-2024-22857: Arbitrary Code Execution in zlog via heap-based buffer overflow",
