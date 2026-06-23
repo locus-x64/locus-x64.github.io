@@ -3,6 +3,7 @@ id: "5"
 slug: "hijack-pidfd"
 title: " Process Hijacking via pidfd: Stealing File Descriptors for Post-Exploitation Shells"
 excerpt: "A technique for stealing file descriptors across process boundaries using Linux pidfd syscalls for post-exploitation shells on Android."
+date: "2026-03-04"
 readingTime: 30
 tags: ["Exploit Development", "Technique"]
 ---
