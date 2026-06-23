@@ -1,7 +1,231 @@
 {
-  "generatedAt": "2026-04-22T07:56:16.740Z",
+  "generatedAt": "2026-06-23T08:59:56.664Z",
   "username": "locus-x64",
   "items": [
+    {
+      "id": "pr:scanipy/scanipy-oss#10",
+      "type": "patch",
+      "title": "docs: release 0.2.0 — de-stub docs, version bump, end-to-end example, doc tests (Phase 6, WP-H)",
+      "summary": "Phase 6 (final) of [PLAN.md](PLAN.md). Ships the working `0.2.0`: - `__version__` → **0.2.0**; README/usage **de-stubbed** (scan/rules are real) and honest that it's   **install-from-source / not yet on PyPI** (P7). - `docs/dsl-reference.m…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/10",
+      "date": "2026-06-08T20:47:05Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#9",
+      "type": "patch",
+      "title": "test: cross-cutting QA — determinism, golden snapshots, resilience, perf, coverage gate ≥90% (Phase 5, WP-G)",
+      "summary": "Phase 5 of [PLAN.md](PLAN.md). Cross-cutting test guarantees on top of the per-detector P5 matrix: **coverage gate** (`--cov-fail-under=90`, wired into CI; global **95.64%**), **determinism** (corpus scanned twice → byte-identical JSON+SAR…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/9",
+      "date": "2026-06-08T20:11:33Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#8",
+      "type": "patch",
+      "title": "feat(cli): working scan/rules pipeline — discovery, config, reporting, exit codes (Phase 4, WP-F)",
+      "summary": "Phase 4 of [PLAN.md](PLAN.md). Makes `scanipy scan` and `scanipy rules` real: `scanner.py` orchestrator (discover → frontend+engine per file with per-file isolation → aggregate/filter/dedup/total-order sort → render → exit code), `discover…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/8",
+      "date": "2026-06-08T19:28:06Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#7",
+      "type": "patch",
+      "title": "feat(detectors): v1 catalog — code-injection, path-traversal, SSRF, deserialization, XXE (Phase 4, WP-E)",
+      "summary": "Phase 4 of [PLAN.md](PLAN.md). Adds the v1 detector catalog as declarative taint-DSL (data only, P4): **code-injection** (CWE-94), **path-traversal** (CWE-22), **ssrf** (CWE-918), **unsafe-deserialization** (CWE-502), **xxe** (CWE-611, mod…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/7",
+      "date": "2026-06-08T19:27:54Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#6",
+      "type": "patch",
+      "title": "feat(engine): taint analysis core — intra-file interprocedural via TITO summaries (Phase 3, WP-D)",
+      "summary": "Phase 3 of [PLAN.md](PLAN.md) — the correctness-critical core. Implements `TaintEngine.analyze` end-to-end: access-path taint lattice, flow-sensitive CFG dataflow with **union-at-join** one-sided sanitizers, generic detector-agnostic propa…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/6",
+      "date": "2026-06-08T14:43:06Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#5",
+      "type": "patch",
+      "title": "feat(engine): pattern matcher with pinned wildcard/args/when semantics (Phase 2, WP-C)",
+      "summary": "Phase 2 of [PLAN.md](PLAN.md). Adds `src/scanipy/engine/matcher.py` — a pure, deterministic `match(pattern, node) -> MatchResult | None` over the real `scanipy.ir` nodes: kind gate, exact / trailing-single / leading-greedy dotted wildcards…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/5",
+      "date": "2026-06-08T13:33:50Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#4",
+      "type": "patch",
+      "title": "feat(frontend): Python AST→IR frontend + import resolution + CFG (Phase 1, WP-B)",
+      "summary": "Phase 1 of [PLAN.md](PLAN.md). Adds the shared IR (`src/scanipy/ir.py`), import/alias canonicalization (`frontends/resolver.py`, incl. imports nested in control-flow), and the `ast → IRModule` lowering with a per-function CFG; `parse()` re…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/4",
+      "date": "2026-06-08T12:53:13Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#3",
+      "type": "patch",
+      "title": "feat(dsl): taint-DSL parser + registry loader (Phase 1, WP-A)",
+      "summary": "Phase 1 of [PLAN.md](PLAN.md). Implements `dsl.parse_spec` (location-aware `DSLError`, full validation, all four pattern kinds incl. parameter/import, flow vocabulary) and wires `registry.load_builtin_detectors` (sorted, globally-unique id…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/3",
+      "date": "2026-06-08T12:53:09Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#2",
+      "type": "patch",
+      "title": "docs: v1 implementation plan (scaffold → working 0.2.0)",
+      "summary": "The master build plan to take the `0.1.0` scaffold to a working, tested, documented `0.2.0` taint-tracking SAST. **Adds** - `PLAN.md` — vision/scope, architecture (prior-art-grounded: access-path taint,   flow-sensitive CFG dataflow, union…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/2",
+      "date": "2026-06-08T11:47:14Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy-oss#1",
+      "type": "patch",
+      "title": "feat: initialize scanipy OSS scaffold (CLI skeleton, taint-DSL design, agents)",
+      "summary": "Initializes the **scanipy** open-source edition — a local, private, taint-tracking SAST CLI for Python (the free CLI taste of scanipy). This is the **0.1.0 scaffold**: foundation + agent team, not a working engine yet. ## What's included -…",
+      "repo": "scanipy/scanipy-oss",
+      "url": "https://github.com/scanipy/scanipy-oss/pull/1",
+      "date": "2026-06-08T10:54:58Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy.github.io#7",
+      "type": "patch",
+      "title": "Make title clean",
+      "summary": "",
+      "repo": "scanipy/scanipy.github.io",
+      "url": "https://github.com/scanipy/scanipy.github.io/pull/7",
+      "date": "2026-05-25T11:56:19Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy.github.io#6",
+      "type": "patch",
+      "title": "Updated the design according to v3.2",
+      "summary": "",
+      "repo": "scanipy/scanipy.github.io",
+      "url": "https://github.com/scanipy/scanipy.github.io/pull/6",
+      "date": "2026-05-20T14:18:32Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy.github.io#5",
+      "type": "patch",
+      "title": "Recover content sweep: new OG image + remove em-dashes",
+      "summary": "## What this is PR #4 was merged with only the round-2 commit (\\`9724915\\`); the follow-up content commit (\\`518e529\\`) didn't make it into the merge. This PR re-applies that commit (now rebased as \\`6242152\\`) on top of current main. Same…",
+      "repo": "scanipy/scanipy.github.io",
+      "url": "https://github.com/scanipy/scanipy.github.io/pull/5",
+      "date": "2026-05-09T19:50:55Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy.github.io#4",
+      "type": "patch",
+      "title": "Redesign round 2: dark hero + DarkPipeline + expanded nav + new pages",
+      "summary": "## What this is PR #3's round-2 commit (the one carrying the dark hero + expanded nav + new pages) didn't make it into the merge — only the round-1 commit landed on `main`. This PR brings the missing round-2 work in cleanly. The branch has…",
+      "repo": "scanipy/scanipy.github.io",
+      "url": "https://github.com/scanipy/scanipy.github.io/pull/4",
+      "date": "2026-05-09T19:27:40Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy.github.io#3",
+      "type": "patch",
+      "title": "Redesign homepage: dark hero + DarkPipeline + expanded nav",
+      "summary": "## Summary PR #2 shipped, but reviewer feedback flagged three problems with the launch site: 1. **Too technical for a marketing audience.** The homepage led with parenthetical academic citations in the hero subhead (Yamaguchi S&P 2014 / En…",
+      "repo": "scanipy/scanipy.github.io",
+      "url": "https://github.com/scanipy/scanipy.github.io/pull/3",
+      "date": "2026-05-09T18:45:40Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
+    {
+      "id": "pr:scanipy/scanipy.github.io#2",
+      "type": "patch",
+      "title": "Marketing rewrite: v2 SaaS pitch + /cli page",
+      "summary": "## Summary Rewrites the homepage as a polished B2B SaaS pitch for **scanipy v2**, adds a dedicated `/cli` page for the open-source CLI (research-mode framing), strips v0.app scaffold fingerprints, and consolidates chrome (nav, footer, demo…",
+      "repo": "scanipy/scanipy.github.io",
+      "url": "https://github.com/scanipy/scanipy.github.io/pull/2",
+      "date": "2026-05-09T06:18:51Z",
+      "state": "merged",
+      "tags": [
+        "PR",
+        "scanipy"
+      ]
+    },
     {
       "id": "ghsa:GHSA-f78v-p5hx-m7hh",
       "type": "advisory",
