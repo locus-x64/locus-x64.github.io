@@ -1,5 +1,14 @@
 [
   {
+    "id": "6",
+    "slug": "cve-2020-25279",
+    "title": "Reversing a Samsung Baseband to Find CVE-2020-25279 (SVE-2020-18098)",
+    "excerpt": "Reversing a Samsung Exynos (Shannon) baseband firmware to independently locate CVE-2020-25279 — a missing Bearer Capability length check in the SETUP message parser that lets an oversized buffer be allocated and later overflow.",
+    "date": "2026-06-22",
+    "readingTime": 9,
+    "tags": ["Reverse Engineering", "Baseband", "Vulnerability Research", "CVE"]
+  },
+  {
     "id": "5",
     "slug": "hijack-pidfd",
     "title": " Process Hijacking via pidfd: Stealing File Descriptors for Post-Exploitation Shells",
